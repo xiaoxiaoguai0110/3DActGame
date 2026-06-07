@@ -1,0 +1,85 @@
+# Unity
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+
+# Visual Studio
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+.vs/
+
+# JetBrains Rider
+.idea/
+*.sln.DotSettings
+
+# macOS
+.DS_Store
+
+# Unity generated
+Assets/AssetStoreTools*
+**/*.meta
+**/*.unity
+**/*.prefab
+**/*.asset
+
+# Art assets (fbx, models, textures, audio)
+**/*.fbx
+**/*.blend
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.tga
+**/*.psd
+**/*.tiff
+**/*.mp3
+**/*.wav
+**/*.ogg
+**/*.wma
+**/*.avi
+**/*.mp4
+**/*.mov
+**/*.fbx.meta
+**/*.blend.meta
+**/*.png.meta
+**/*.jpg.meta
+**/*.jpeg.meta
+**/*.tga.meta
+**/*.psd.meta
+**/*.tiff.meta
+**/*.mp3.meta
+**/*.wav.meta
+**/*.ogg.meta
+**/*.wma.meta
+**/*.avi.meta
+**/*.mp4.meta
+**/*.mov.meta
+
+# Packages
+Packages/
+
+# Unity generated assets
+**/*.controller
+**/*.mat
+**/*.physicMaterial
+**/*.physicsMaterial
+**/*.anim
+**/*.overrideController
+**/*.mask
+**/*.renderTexture
+**/*.terrainlayer
+
+# Scene preview / lighting
+**/*.lighting
+
+# Terrain
+**/*.terrainlayer
+
+# Logs
+*.log
