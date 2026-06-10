@@ -11,14 +11,17 @@ public class Player : MonoBehaviour
     private Transform m_CameraTransform;
     private PlayerState m_CurrentState;
     private Animator m_Animator;
+    private CharacterController m_Controller;
 
     private int m_ComboStage;
     private float m_ComboTimer;
+    private float m_VerticalVelocity;
 
     private void Start()
     {
         m_CameraTransform = Camera.main.transform;
         m_Animator = GetComponent<Animator>();
+        m_Controller = GetComponent<CharacterController>();
         InputReader.Instance.OnAttack += HandleAttack;
     }
 
@@ -44,7 +47,13 @@ public class Player : MonoBehaviour
         bool isRunning = InputReader.Instance.IsRunning;
 
         UpdateState(hasInput, isRunning);
-        UpdateMovement(input);
+
+        if (m_CurrentState != PlayerState.Idle)
+        {
+            Vector3 moveDirection = GetMoveDirection(input);
+            Move(moveDirection);
+            Rotate(moveDirection);
+        }
     }
 
     private void UpdateState(bool hasInput, bool isRunning)
@@ -66,16 +75,6 @@ public class Player : MonoBehaviour
         m_Animator.SetFloat("Speed", normalizedSpeed);
     }
 
-    private void UpdateMovement(Vector2 input)
-    {
-        if (m_CurrentState == PlayerState.Idle)
-            return;
-
-        Vector3 moveDirection = GetMoveDirection(input);
-        Move(moveDirection);
-        Rotate(moveDirection);
-    }
-
     private Vector3 GetMoveDirection(Vector2 input)
     {
         Vector3 cameraForward = m_CameraTransform.forward;
@@ -93,7 +92,14 @@ public class Player : MonoBehaviour
     private void Move(Vector3 direction)
     {
         float speed = m_CurrentState == PlayerState.Run ? m_RunSpeed : m_WalkSpeed;
-        transform.Translate(direction * speed * Time.deltaTime, Space.World);
+
+        if (m_Controller.isGrounded && m_VerticalVelocity < 0f)
+            m_VerticalVelocity = -2f;
+
+        m_VerticalVelocity += Physics.gravity.y * Time.deltaTime;
+
+        Vector3 motion = direction * speed + Vector3.up * m_VerticalVelocity;
+        m_Controller.Move(motion * Time.deltaTime);
     }
 
     private void Rotate(Vector3 direction)
@@ -104,11 +110,9 @@ public class Player : MonoBehaviour
 
     private void HandleAttack()
     {
-        // 第五段攻击中，忽略任何输入，等它完整播完
         if (m_ComboStage >= 5)
             return;
 
-        // 还在窗口开启前的延迟阶段 → 忽略，防止抽搐
         if (m_ComboStage > 0 && m_ComboTimer > m_ComboWindowDuration)
             return;
 
@@ -117,7 +121,8 @@ public class Player : MonoBehaviour
         m_Animator.SetInteger("ComboStage", m_ComboStage);
         m_Animator.SetTrigger("OnAttack");
 
-        // 第五段攻击给更长的超时时间，确保动画完整播完
+        AudioManager.Instance.PlayAttackSound();
+
         m_ComboTimer = m_ComboStage >= 5 ? 2f : m_ComboWindowStartDelay + m_ComboWindowDuration;
     }
 
