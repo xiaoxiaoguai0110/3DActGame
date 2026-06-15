@@ -13,6 +13,7 @@ public class InputReader : MonoBehaviour
     public bool IsRunning { get; private set; }
 
     public event Action OnAttack;
+    public event Action OnLock;
 
     private void Awake()
     {
@@ -33,11 +34,13 @@ public class InputReader : MonoBehaviour
         m_InputActions.Camera.Enable();
 
         m_InputActions.Player.Attack.performed += HandleAttack;
+        m_InputActions.Player.LockOn.performed += HandleLock;
     }
 
     private void OnDisable()
     {
         m_InputActions.Player.Attack.performed -= HandleAttack;
+        m_InputActions.Player.LockOn.performed -= HandleLock;
 
         m_InputActions.Player.Disable();
         m_InputActions.Camera.Disable();
@@ -53,5 +56,10 @@ public class InputReader : MonoBehaviour
     private void HandleAttack(InputAction.CallbackContext context)
     {
         OnAttack?.Invoke();
+    }
+
+    private void HandleLock(InputAction.CallbackContext context)
+    {
+        OnLock?.Invoke();
     }
 }
