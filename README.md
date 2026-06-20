@@ -54,10 +54,14 @@ Assets/
 - **Attack**：进入攻击范围后随机选择 4 种攻击动画之一
   - **扇形伤害检测**：距离 + 前方 ±60° 角度判定
   - **攻击冷却**：每次攻击后冷却 3 秒才能再次攻击
+  - **攻击事件驱动**：Animation Event (`OnAttackHit` / `OnAttackEnd`) 控制伤害和状态切换
+- **GetHit**（新增）：受击后进入受击动画，超时 0.8 秒自动切回 Idle
+  - 受击动画无需配置 Animation Event，通过计时器超时保护防止状态卡死
 
 ### 血量系统 (Health)
 - 通用组件，挂载到 Player 和 Enemy 上
 - 提供受伤、当前血量、最大血量、血量比例接口
+- `OnHealthChanged` 事件（`Action` 类型）通知受伤
 - Inspector 实时显示当前血量（`[SerializeField]`）
 
 ## 状态流程
@@ -68,6 +72,7 @@ Assets/
 Shift + 有输入 ──→ Run（10 速度）
 鼠标左键 ──→ 五段连击（攻击中锁定移动）
 鼠标中键 ──→ 锁定/解锁目标（锁定后移动方式切换）
+受击 ──→ GetHit（0.8s 后自动切回 Idle）
 ```
 
 ## Animator 参数
@@ -83,6 +88,15 @@ Shift + 有输入 ──→ Run（10 速度）
 | `MoveSpeed` | float (0~1) | Idle=0, Patrol=0.5, Pursuit=1 |
 | `AttackIndex` | float (0/0.33/0.66/1) | 选择 4 种攻击动画 |
 | `OnAttack` | Trigger | 触发攻击动画 |
+| `OnGetHit` | Trigger | 触发受击动画 |
+
+### 敌人 Animation Event
+
+| 事件名 | 触发时机 | 作用 |
+|--------|---------|------|
+| `OnAttackHit()` | 攻击动画关键帧 | 扇形检测玩家，造成伤害 |
+| `OnAttackEnd()` | 攻击动画结束 | 切回 Pursuit + 进入冷却 |
+| `OnGetHitEnd()` | 受击动画结束（可选） | 切回 Idle（计时器兜底） |
 
 ## 如何运行
 
@@ -93,8 +107,9 @@ Shift + 有输入 ──→ Run（10 速度）
 4. Player 身上挂载 `Player` 脚本 + `Animator` + `CharacterController` + `Health`
 5. 玩家的剑上挂载 `WeaponDamage` + `Box Collider(Is Trigger)` + `Rigidbody(IsKinematic)`
 6. 怪物身上挂载 `Enemy` + `Animator` + `NavMeshAgent` + `Collider` + `Health`，Tag 设为 `Enemy`
-7. 配置好 Animator Controller
-8. 运行游戏
+7. 在 Enemy 的 Inspector 中将 Player 拖入 `Player Obj` 字段
+8. 配置好 Animator Controller
+9. 运行游戏
 
 ## Unity 版本
 

@@ -24,14 +24,15 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float m_AttackRange = 3.5f;
     [SerializeField] private float m_AttackDamage = 20f;
     [SerializeField] private float m_AttackCooldown = 3f;
+    [SerializeField] private GameObject playerObj;
 
     private Animator m_Animator;
     private NavMeshAgent m_Agent;
     private Transform m_Player;
+    private Health m_Health;
 
     private float m_StateTimer;
     private float m_AttackType;
-    private bool m_HasDealtDamage;
     private float m_AttackCooldownTimer;
 
     private void Start()
@@ -39,12 +40,21 @@ public class Enemy : MonoBehaviour
         m_Animator = GetComponent<Animator>();
         m_Agent = GetComponent<NavMeshAgent>();
         m_Agent.stoppingDistance = m_AttackRange;
+        m_Health = GetComponent<Health>();
 
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
             m_Player = playerObj.transform;
 
         m_StateTimer = m_IdleDuration;
+
+        if (m_Health != null)
+            m_Health.OnHealthChanged += HandleGetHit;
+    }
+
+    private void OnDestroy()
+    {
+        if (m_Health != null)
+            m_Health.OnHealthChanged -= HandleGetHit;
     }
 
     private void Update()
@@ -71,6 +81,10 @@ public class Enemy : MonoBehaviour
             case EnemyState.Attack:
                 m_Animator.SetFloat("MoveSpeed", 0f);
                 UpdateAttack();
+                break;
+            case EnemyState.GetHit:
+                m_Animator.SetFloat("MoveSpeed", 0f);
+                UpdateGetHit();
                 break;
         }
     }
@@ -148,8 +162,6 @@ public class Enemy : MonoBehaviour
         m_Agent.ResetPath();
         m_Agent.velocity = Vector3.zero;
 
-        m_HasDealtDamage = false;
-
         float[] attackValues = { 0f, 0.33f, 0.66f, 1f };
         m_AttackType = attackValues[Random.Range(0, attackValues.Length)];
 
@@ -174,14 +186,6 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        // 已经造成过伤害，切回 Pursuit 并进入冷却
-        if (m_HasDealtDamage)
-        {
-            m_AttackCooldownTimer = m_AttackCooldown;
-            m_CurrentState = EnemyState.Pursuit;
-            return;
-        }
-
         // 面朝玩家
         Vector3 lookDirection = m_Player.position - transform.position;
         lookDirection.y = 0f;
@@ -189,14 +193,51 @@ public class Enemy : MonoBehaviour
             transform.forward = lookDirection;
     }
 
+    private float m_GetHitTimer;
+
+    /// <summary>
+    /// 由 Health.OnHealthChanged 触发，进入受击状态。
+    /// </summary>
+    private void HandleGetHit()
+    {
+        if (m_CurrentState == EnemyState.Dead) return;
+
+        m_CurrentState = EnemyState.GetHit;
+        m_Agent.ResetPath();
+        m_Agent.velocity = Vector3.zero;
+        m_Animator.SetTrigger("OnGetHit");
+
+        // 设置超时保护，受击动画一般约 0.5~1s
+        m_GetHitTimer = 0.8f;
+    }
+
+    /// <summary>
+    /// 受击状态：等待动画播完自动回到 Idle。
+    /// </summary>
+    private void UpdateGetHit()
+    {
+        m_GetHitTimer -= Time.deltaTime;
+        if (m_GetHitTimer <= 0f)
+        {
+            OnGetHitEnd();
+        }
+    }
+
+    /// <summary>
+    /// 由 Animation Event 在受击动画结束时调用。
+    /// </summary>
+    private void OnGetHitEnd()
+    {
+        m_CurrentState = EnemyState.Idle;
+        m_StateTimer = m_IdleDuration;
+    }
+
     /// <summary>
     /// 由 Animation Event 在攻击动画的关键帧调用。
-    /// 检测玩家是否在攻击范围（距离 + 前方扇区）内，若是则造成伤害。
+    /// 玩家在攻击范围内则造成伤害，不在则跳过。
     /// </summary>
     private void OnAttackHit()
     {
-        // 防止同一段攻击动画中重复造成伤害
-        if (m_HasDealtDamage) return;
         if (m_Player == null) return;
 
         // 距离检测
@@ -210,10 +251,17 @@ public class Enemy : MonoBehaviour
 
         Health playerHealth = m_Player.GetComponent<Health>();
         if (playerHealth != null)
-        {
             playerHealth.TakeDamage(m_AttackDamage);
-            m_HasDealtDamage = true;
-        }
+    }
+
+    /// <summary>
+    /// 由 Animation Event 在攻击动画结束时调用。
+    /// 切回追击状态并进入攻击冷却。
+    /// </summary>
+    private void OnAttackEnd()
+    {
+        m_AttackCooldownTimer = m_AttackCooldown;
+        m_CurrentState = EnemyState.Pursuit;
     }
 
     private void PickRandomPatrolPoint()

@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
+    public event Action OnHealthChanged;
+
     [SerializeField] private float m_MaxHP = 100f;
     [SerializeField] private float m_CurrentHP;
 
@@ -17,6 +20,7 @@ public class Health : MonoBehaviour
         m_CurrentHP -= damage;
         m_CurrentHP = Mathf.Max(m_CurrentHP, 0f);
         Debug.Log($"{name} 受到 {damage} 点伤害，剩余 {m_CurrentHP} HP");
+        OnHealthChanged?.Invoke();
     }
 
     public float GetCurrentHP()

@@ -28,8 +28,8 @@ public class WeaponDamage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        
-        Debug.Log($"碰到了：{other.name}, Tag：{other.tag}");
+        // 只对敌人造成伤害
+        if (!other.CompareTag("Enemy")) return;
 
         Health enemyHealth = other.GetComponentInParent<Health>();
         if (enemyHealth == null) return;
