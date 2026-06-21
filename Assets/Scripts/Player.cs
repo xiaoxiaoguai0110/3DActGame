@@ -5,8 +5,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float m_WalkSpeed = 5f;
     [SerializeField] private float m_RunSpeed = 10f;
     [SerializeField] private float m_RotationSpeed = 10f;
-    [SerializeField] private float m_ComboWindowStartDelay = 1.2f;
-    [SerializeField] private float m_ComboWindowDuration = 0.5f;
+    [SerializeField] private float m_ComboWindowDuration = 1.5f;
+    [SerializeField] private int m_ComboMaxStage = 5;
     [SerializeField] private float[] m_ComboDamages = { 10f, 15f, 20f, 25f, 30f };
     [SerializeField] private WeaponDamage m_WeaponDamage;
     [SerializeField] private float m_LockOnRange = 15f;
@@ -18,9 +18,12 @@ public class Player : MonoBehaviour
     private CharacterController m_Controller;
 
     private int m_ComboStage;
+    private int m_PreparedComboStage;
     private float m_ComboTimer;
     private float m_VerticalVelocity;
     private Transform m_LockOnTarget;
+    private bool m_HasEnteredComboAnimation;
+    private bool m_QueuedAttackAfterPrepared;
 
     private void Start()
     {
@@ -39,22 +42,38 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (m_ComboStage > 0)
-        {
-            m_ComboTimer -= Time.deltaTime;
-            if (m_ComboTimer <= 0f)
-            {
-                m_ComboStage = 0;
-            }
-            return;
-        }
-
-        // 锁定目标死亡时自动解锁
         if (m_LockOnTarget != null)
         {
             Health targetHealth = m_LockOnTarget.GetComponent<Health>();
             if (targetHealth == null || targetHealth.GetCurrentHP() <= 0f)
                 m_LockOnTarget = null;
+        }
+
+        if (m_ComboStage > 0)
+        {
+            if (m_PreparedComboStage > 0 && IsCurrentComboStage(m_PreparedComboStage))
+                CommitPreparedComboStage();
+
+            if (IsInComboAnimation())
+                m_HasEnteredComboAnimation = true;
+
+            if (m_HasEnteredComboAnimation && IsInLocomotionAnimation())
+            {
+                ResetCombo();
+                return;
+            }
+
+            m_ComboTimer -= Time.deltaTime;
+            if (m_ComboTimer <= 0f && m_ComboStage < m_ComboMaxStage)
+            {
+                ResetCombo();
+                return;
+            }
+
+            if (m_LockOnTarget != null)
+                FaceTarget();
+
+            return;
         }
 
         Vector2 input = InputReader.Instance.MoveInput;
@@ -65,7 +84,6 @@ public class Player : MonoBehaviour
 
         if (m_LockOnTarget != null)
         {
-            // 锁定时：面朝目标，移动方向以目标为基准
             Vector3 moveDirection = GetLockedMoveDirection(input);
             Move(moveDirection);
             FaceTarget();
@@ -76,6 +94,59 @@ public class Player : MonoBehaviour
             Move(moveDirection);
             Rotate(moveDirection);
         }
+    }
+
+    private void ResetCombo()
+    {
+        m_ComboStage = 0;
+        m_PreparedComboStage = 0;
+        m_HasEnteredComboAnimation = false;
+        m_QueuedAttackAfterPrepared = false;
+        m_Animator.SetInteger("ComboStage", 0);
+        m_Animator.ResetTrigger("OnAttack");
+    }
+
+    private bool IsInComboAnimation()
+    {
+        AnimatorStateInfo currentState = m_Animator.GetCurrentAnimatorStateInfo(0);
+        if (IsComboState(currentState))
+            return true;
+
+        if (!m_Animator.IsInTransition(0))
+            return false;
+
+        AnimatorStateInfo nextState = m_Animator.GetNextAnimatorStateInfo(0);
+        return IsComboState(nextState);
+    }
+
+    private bool IsComboState(AnimatorStateInfo stateInfo)
+    {
+        return stateInfo.IsName("combo_04_1 0")
+            || stateInfo.IsName("combo_04_2 0")
+            || stateInfo.IsName("combo_04_3 0")
+            || stateInfo.IsName("combo_04_4 0")
+            || stateInfo.IsName("combo_04_5 0");
+    }
+
+    private bool IsCurrentComboStage(int stage)
+    {
+        return GetComboStage(m_Animator.GetCurrentAnimatorStateInfo(0)) == stage;
+    }
+
+    private int GetComboStage(AnimatorStateInfo stateInfo)
+    {
+        if (stateInfo.IsName("combo_04_1 0")) return 1;
+        if (stateInfo.IsName("combo_04_2 0")) return 2;
+        if (stateInfo.IsName("combo_04_3 0")) return 3;
+        if (stateInfo.IsName("combo_04_4 0")) return 4;
+        if (stateInfo.IsName("combo_04_5 0")) return 5;
+        return 0;
+    }
+
+    private bool IsInLocomotionAnimation()
+    {
+        return !m_Animator.IsInTransition(0)
+            && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Blend Tree");
     }
 
     private void UpdateState(bool hasInput, bool isRunning)
@@ -130,9 +201,6 @@ public class Player : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, m_RotationSpeed * Time.deltaTime);
     }
 
-    /// <summary>
-    /// 锁定时获取移动方向：前后为靠近/远离目标，左右为横移。
-    /// </summary>
     private Vector3 GetLockedMoveDirection(Vector2 input)
     {
         Vector3 forward = (m_LockOnTarget.position - transform.position).normalized;
@@ -144,9 +212,6 @@ public class Player : MonoBehaviour
         return (forward * input.y + right * input.x).normalized;
     }
 
-    /// <summary>
-    /// 锁定时始终面朝目标。
-    /// </summary>
     private void FaceTarget()
     {
         Vector3 direction = (m_LockOnTarget.position - transform.position).normalized;
@@ -158,25 +223,17 @@ public class Player : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 按锁定键时切换锁定状态。
-    /// </summary>
     private void HandleLock()
     {
         if (m_LockOnTarget != null)
         {
-            // 已锁定 → 解锁
             m_LockOnTarget = null;
             return;
         }
 
-        // 未锁定 → 找目标
         m_LockOnTarget = FindLockOnTarget();
     }
 
-    /// <summary>
-    /// 在摄像机前方一定范围内查找最近的敌人。
-    /// </summary>
     private Transform FindLockOnTarget()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, m_LockOnRange);
@@ -192,12 +249,10 @@ public class Player : MonoBehaviour
 
             Transform enemyRoot = hit.transform.root;
 
-            // 判断是否在摄像机前方
             Vector3 directionToEnemy = (enemyRoot.position - m_CameraTransform.position).normalized;
             float angle = Vector3.Angle(m_CameraTransform.forward, directionToEnemy);
             if (angle > m_LockOnAngle) continue;
 
-            // 选最近的
             float distance = Vector3.Distance(transform.position, enemyRoot.position);
             if (distance < nearestDistance)
             {
@@ -216,13 +271,11 @@ public class Player : MonoBehaviour
 
     public float GetCurrentAttackDamage()
     {
-        int index = Mathf.Clamp(m_ComboStage - 1, 0, m_ComboDamages.Length - 1);
+        int damageStage = m_PreparedComboStage > 0 ? m_PreparedComboStage : m_ComboStage;
+        int index = Mathf.Clamp(damageStage - 1, 0, m_ComboDamages.Length - 1);
         return m_ComboDamages[index];
     }
 
-    /// <summary>
-    /// 收剑时关闭伤害检测（由 Invoke 回调）。
-    /// </summary>
     private void DisableDamage()
     {
         if (m_WeaponDamage != null)
@@ -231,28 +284,79 @@ public class Player : MonoBehaviour
 
     private void HandleAttack()
     {
-        if (m_ComboStage >= 5)
+        if (m_ComboStage == 0)
+        {
+            StartCombo(1);
+            return;
+        }
+
+        if (!IsInComboAnimation())
             return;
 
-        if (m_ComboStage > 0 && m_ComboTimer > m_ComboWindowDuration)
+        if (m_PreparedComboStage > 0)
+        {
+            m_QueuedAttackAfterPrepared = true;
+            m_ComboTimer = m_ComboWindowDuration;
+            return;
+        }
+
+        if (m_ComboStage >= m_ComboMaxStage)
             return;
 
-        m_ComboStage++;
+        PrepareComboTransition(m_ComboStage + 1);
+    }
 
-        m_Animator.SetInteger("ComboStage", m_ComboStage);
+    private void StartCombo(int stage)
+    {
+        m_ComboStage = stage;
+        m_PreparedComboStage = 0;
+        m_QueuedAttackAfterPrepared = false;
+
+        SetComboAnimatorConditions(stage);
+        PlayComboEffects();
+        m_ComboTimer = m_ComboWindowDuration;
+    }
+
+    private void PrepareComboTransition(int stage)
+    {
+        m_PreparedComboStage = stage;
+        SetComboAnimatorConditions(stage);
+        m_ComboTimer = m_ComboWindowDuration;
+    }
+
+    private void CommitPreparedComboStage()
+    {
+        m_ComboStage = m_PreparedComboStage;
+        m_PreparedComboStage = 0;
+
+        PlayComboEffects();
+        m_ComboTimer = m_ComboWindowDuration;
+
+        if (m_QueuedAttackAfterPrepared && m_ComboStage < m_ComboMaxStage)
+        {
+            m_QueuedAttackAfterPrepared = false;
+            PrepareComboTransition(m_ComboStage + 1);
+            return;
+        }
+
+        m_QueuedAttackAfterPrepared = false;
+    }
+
+    private void SetComboAnimatorConditions(int stage)
+    {
+        m_Animator.SetInteger("ComboStage", stage);
+        m_Animator.ResetTrigger("OnAttack");
         m_Animator.SetTrigger("OnAttack");
+    }
 
+    private void PlayComboEffects()
+    {
         AudioManager.Instance.PlayAttackSound();
 
-        // 开启武器伤害检测（立即执行 OverlapSphere）
         if (m_WeaponDamage != null)
             m_WeaponDamage.EnableDamage();
-
-        // 攻击动画结束后自动关闭
         CancelInvoke(nameof(DisableDamage));
         Invoke(nameof(DisableDamage), 0.5f);
-
-        m_ComboTimer = m_ComboStage >= 5 ? 2f : m_ComboWindowStartDelay + m_ComboWindowDuration;
     }
 
     private enum PlayerState

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class EnemyHealthUI : MonoBehaviour
 {
     [SerializeField] private Slider m_Slider;
+    [SerializeField] private float m_DisplayRange = 20f;
 
     private Health m_Health;
     private Player m_Player;
@@ -31,8 +32,9 @@ public class EnemyHealthUI : MonoBehaviour
     {
         if (m_Slider == null || m_Player == null) return;
 
-        bool isLocked = m_Player.GetLockOnTarget() == transform;
-        m_Slider.gameObject.SetActive(isLocked);
+        float distance = Vector3.Distance(transform.position, m_Player.transform.position);
+        bool show = distance <= m_DisplayRange;
+        m_Slider.gameObject.SetActive(show);
     }
 
     private void UpdateHealthBar()

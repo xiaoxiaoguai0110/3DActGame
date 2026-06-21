@@ -130,7 +130,6 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        // 攻击冷却中，倒计时
         if (m_AttackCooldownTimer > 0f)
         {
             m_AttackCooldownTimer -= Time.deltaTime;
@@ -186,7 +185,6 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        // 面朝玩家
         Vector3 lookDirection = m_Player.position - transform.position;
         lookDirection.y = 0f;
         if (lookDirection != Vector3.zero)
@@ -195,9 +193,6 @@ public class Enemy : MonoBehaviour
 
     private float m_GetHitTimer;
 
-    /// <summary>
-    /// 由 Health.OnHealthChanged 触发，进入受击状态。
-    /// </summary>
     private void HandleGetHit()
     {
         if (m_CurrentState == EnemyState.Dead) return;
@@ -207,13 +202,9 @@ public class Enemy : MonoBehaviour
         m_Agent.velocity = Vector3.zero;
         m_Animator.SetTrigger("OnGetHit");
 
-        // 设置超时保护，受击动画一般约 0.5~1s
-        m_GetHitTimer = 0.8f;
+        m_GetHitTimer = 1f;
     }
 
-    /// <summary>
-    /// 受击状态：等待动画播完自动回到 Idle。
-    /// </summary>
     private void UpdateGetHit()
     {
         m_GetHitTimer -= Time.deltaTime;
@@ -223,28 +214,19 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 由 Animation Event 在受击动画结束时调用。
-    /// </summary>
     private void OnGetHitEnd()
     {
         m_CurrentState = EnemyState.Idle;
         m_StateTimer = m_IdleDuration;
     }
 
-    /// <summary>
-    /// 由 Animation Event 在攻击动画的关键帧调用。
-    /// 玩家在攻击范围内则造成伤害，不在则跳过。
-    /// </summary>
     private void OnAttackHit()
     {
         if (m_Player == null) return;
 
-        // 距离检测
         float distance = Vector3.Distance(transform.position, m_Player.position);
         if (distance > m_AttackRange) return;
 
-        // 角度检测 —— 玩家必须在怪物前方 ±60°（共 120° 扇形）
         Vector3 directionToPlayer = (m_Player.position - transform.position).normalized;
         float angle = Vector3.Angle(transform.forward, directionToPlayer);
         if (angle > 60f) return;
@@ -254,10 +236,6 @@ public class Enemy : MonoBehaviour
             playerHealth.TakeDamage(m_AttackDamage);
     }
 
-    /// <summary>
-    /// 由 Animation Event 在攻击动画结束时调用。
-    /// 切回追击状态并进入攻击冷却。
-    /// </summary>
     private void OnAttackEnd()
     {
         m_AttackCooldownTimer = m_AttackCooldown;

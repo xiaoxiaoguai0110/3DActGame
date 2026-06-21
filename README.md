@@ -1,90 +1,110 @@
 # 3DActGame - 类魂游戏练习项目
 
+> Unity 2022.3.46f1 | 3D 动作游戏 | 类魂风格练习项目
+
 用 Unity 练习游戏客户端工程开发的类魂动作游戏项目。
 
 ## 项目结构
 
 ```
-Assets/Scripts/
-├── Manager/
-│   └── InputManager.cs       # 输入管理单例（Move/Look/Run/Attack/LockOn）
-├── Player.cs                 # 玩家控制（移动/转向/状态/五段连击/锁定）
-├── CameraController.cs       # 摄像机控制（鼠标旋转/锁定追踪）
-├── Enemy.cs                  # 敌人 AI（Idle/Patrol/Pursuit/Attack 四状态）
-├── Health.cs                 # 血量组件（受伤/当前血量/最大血量）
-├── WeaponDamage.cs          # 武器伤害检测（Trigger Collider + Overlap）
-└── 学习日志-工程意识培养.md   # 开发踩坑记录
-
 Assets/
-├── PlayerController.cs           # InputSystem 自动生成的代码
-└── PlayerController.inputactions # 输入绑定配置
+├── Scripts/
+│   ├── Manager/
+│   │   ├── InputManager.cs      # 输入管理单例
+│   │   └── AudioManager.cs      # 音频管理单例
+│   ├── Player.cs                # 玩家移动/连招/锁定
+│   ├── Enemy.cs                 # 敌人 AI FSM（Idle/Patrol/Pursuit/Attack/GetHit）
+│   ├── Health.cs                # 通用血量组件
+│   ├── WeaponDamage.cs          # 武器伤害检测
+│   ├── CameraController.cs      # 摄像机控制
+│   ├── AudioClipRefsSO.cs       # 音频资源 ScriptableObject
+│   ├── UI/
+│   │   ├── HealthyUI.cs         # 玩家血条
+│   │   └── EnemyHealthUI.cs     # 敌人血条
+│   ├── 学习日志-工程意识培养.md
+│   ├── PlayerController.cs              # InputSystem 自动生成
+│   └── PlayerController.inputactions    # 输入绑定配置
+├── ProjectContext.md            # 项目上下文文档（详细技术参考）
+└── README.md                    # 本文件
 ```
 
 ## 已实现的功能
 
 ### 输入系统 (InputReader)
-- 单例模式，跨场景持久化
+- 单例模式（`DontDestroyOnLoad`），跨场景持久化
 - WASD 移动输入 → `MoveInput`
 - 鼠标视角输入 → `LookInput`
 - Shift 奔跑 → `IsRunning`
-- 攻击事件 → `OnAttack`
+- 攻击事件 → `OnAttack`（鼠标左键）
 - 锁定事件 → `OnLock`（鼠标中键）
 
 ### 玩家控制 (Player)
-- **移动**：基于摄像机朝向的 WASD 移动（面朝移动方向）
-- **状态**：Idle / Walk / Run 三状态根据输入和 Shift 自动切换
-- **转向**：移动时平滑转向移动方向
-- **五段连击**：带输入缓冲窗口的连击系统，每段可配置独立伤害值
-- **武器伤害**：剑上的 Trigger Collider + IsKinematic Rigidbody，击中敌人扣血
-- **锁定系统**：鼠标中键锁定前方 ±60° 范围内最近的敌人
+- **移动**：CharacterController + 基于摄像机朝向的 WASD（Walk: 5, Run: 10），重力 `-9.81`
+- **状态**：Idle / Walk / Run 三状态
+- **转向**：`Slerp` 平滑转向，`m_RotationSpeed = 10`
+- **锁定移动**：方向以锁定目标为基准（前后=靠近/远离，左右=横移）
+- **锁定系统**：
+  - `Physics.OverlapSphere` 查找 ±60° 前方最近敌人（范围 15m）
+  - 目标死亡自动解锁；再次按中键手动解锁
+  - 锁定时每帧面朝目标
 
-#### 锁定模式
-- 锁定状态下，WASD 变为以锁定目标为基准：前后=靠近/远离，左右=横移
-- 锁定目标死亡后自动解锁
-- 再次按锁定键手动解锁
+### 连招系统 — 预备推进模式（Prepare-Commit）
+
+使用 `m_PreparedComboStage` 机制配合 Animator 控制五段连招：
+
+- `HandleAttack` 触发时：
+  - 无连招 → 启动连招第 1 段
+  - 不在连招动画中 → 忽略
+  - 已有预备段数 → 记录排队攻击，重置 timer
+  - 已达最大段数 → 忽略
+  - 否则 → 预备下一段
+- `Update` 中检测：
+  - 有预备段数且当前动画匹配 → 提交预备段
+  - 动画切回 Blend Tree → 重置连招
+- **伤害检测**：`Invoke("DisableDamage", 0.5f)` 自动关闭武器碰撞
 
 ### 摄像机 (CameraController)
-- **自由模式**：鼠标控制水平/垂直旋转，始终跟随玩家位置，俯仰角度限制（-30° ~ 80°）
-- **锁定模式**：镜头自动旋转，保持锁定目标在画面中央
+- **自由模式**：鼠标灵敏度 `1.0`，俯仰 `-30°~80°`
+- **锁定模式**：`LerpAngle` 平滑旋转，`m_LockFollowSpeed = 5`
+- 始终跟随目标，`LateUpdate` 执行
 
-### 敌人 AI (Enemy)
-- **Idle**：静止待机，3 秒后随机巡逻
-- **Patrol**：NavMeshAgent 在随机范围内巡逻
-- **Pursuit**：发现玩家后追击（检测范围 10m，放弃范围 20m）
-- **Attack**：进入攻击范围后随机选择 4 种攻击动画之一
-  - **扇形伤害检测**：距离 + 前方 ±60° 角度判定
-  - **攻击冷却**：每次攻击后冷却 3 秒才能再次攻击
-  - **攻击事件驱动**：Animation Event (`OnAttackHit` / `OnAttackEnd`) 控制伤害和状态切换
-- **GetHit**（新增）：受击后进入受击动画，超时 0.8 秒自动切回 Idle
-  - 受击动画无需配置 Animation Event，通过计时器超时保护防止状态卡死
+### 敌人 AI (Enemy FSM)
+
+| 状态 | 触发条件 | 行为 |
+|------|----------|------|
+| Idle | 初始/Patrol到达/Pursuit超出范围 | 等待 3s → 随机选巡逻点 → Patrol |
+| Patrol | Idle结束时 | NavMeshAgent 寻路随机点，检测玩家 10m → Pursuit |
+| Pursuit | 检测到玩家 | 追击，冷却倒计时，进入 3.5m → Attack |
+| Attack | 距离 ≤ 3.5m + 冷却结束 | 随机选 4 种攻击动画，Animation Event `OnAttackHit` 扇形检测 ±60° |
+| GetHit | Health.OnHealthChanged 触发 | 受击动画，1s 超时保护 → Idle |
 
 ### 血量系统 (Health)
-- 通用组件，挂载到 Player 和 Enemy 上
-- 提供受伤、当前血量、最大血量、血量比例接口
-- `OnHealthChanged` 事件（`Action` 类型）通知受伤
-- Inspector 实时显示当前血量（`[SerializeField]`）
+- 通用组件，挂载到 Player 和 Enemy
+- `OnHealthChanged` 事件驱动受伤通知
+- 接口：`GetCurrentHP()`、`GetMaxHP()`、`GetHPRatio()`
 
-## 状态流程
+### UI
+- **玩家血条**：Slider，订阅 `OnHealthChanged` 事件驱动更新
+- **敌人血条**：Slider，距离 ≤ 20m 时显示，`Update` 每帧检测距离
 
-```
-无输入 ──→ Idle（静止）
-有输入 ──→ Walk（5 速度）
-Shift + 有输入 ──→ Run（10 速度）
-鼠标左键 ──→ 五段连击（攻击中锁定移动）
-鼠标中键 ──→ 锁定/解锁目标（锁定后移动方式切换）
-受击 ──→ GetHit（0.8s 后自动切回 Idle）
-```
+### 音频 (AudioManager)
+- 单例模式，使用 `AudioClipRefsSO` ScriptableObject
+- 当前实现攻击音效 `PlayAttackSound()`
 
 ## Animator 参数
 
-| 参数名 | 类型 | 用途（玩家） |
-|--------|------|-------------|
+### 玩家
+
+| 参数名 | 类型 | 用途 |
+|--------|------|------|
 | `Speed` | float (0~1) | Idle=0, Walk=0.5, Run=1 |
-| `ComboStage` | int (1~5) | 当前连击段数 |
+| `ComboStage` | int (0~5) | 当前连招段数 |
 | `OnAttack` | Trigger | 触发攻击动画 |
 
-| 参数名 | 类型 | 用途（敌人） |
-|--------|------|-------------|
+### 敌人
+
+| 参数名 | 类型 | 用途 |
+|--------|------|------|
 | `MoveSpeed` | float (0~1) | Idle=0, Patrol=0.5, Pursuit=1 |
 | `AttackIndex` | float (0/0.33/0.66/1) | 选择 4 种攻击动画 |
 | `OnAttack` | Trigger | 触发攻击动画 |
@@ -96,15 +116,60 @@ Shift + 有输入 ──→ Run（10 速度）
 |--------|---------|------|
 | `OnAttackHit()` | 攻击动画关键帧 | 扇形检测玩家，造成伤害 |
 | `OnAttackEnd()` | 攻击动画结束 | 切回 Pursuit + 进入冷却 |
-| `OnGetHitEnd()` | 受击动画结束（可选） | 切回 Idle（计时器兜底） |
+| `OnGetHitEnd()` | 受击动画结束 | 切回 Idle（计时器兜底） |
+
+## 关键参数配置
+
+| 参数 | 默认值 | 所属 |
+|------|--------|------|
+| WalkSpeed | 5 | Player |
+| RunSpeed | 10 | Player |
+| RotationSpeed | 10 | Player |
+| ComboWindowDuration | 1.5 | Player |
+| ComboMaxStage | 5 | Player |
+| ComboDamages | [10, 15, 20, 25, 30] | Player |
+| LockOnRange | 15 | Player |
+| LockOnAngle | 60 | Player |
+| MouseSensitivity | 1 | Camera |
+| LockFollowSpeed | 5 | Camera |
+| DetectionRange | 10 | Enemy |
+| AbandonRange | 20 | Enemy |
+| AttackRange | 3.5 | Enemy |
+| AttackDamage | 20 | Enemy |
+| AttackCooldown | 3 | Enemy |
+| PatrolRadius | 10 | Enemy |
+| IdleDuration | 3 | Enemy |
+| DisplayRange | 20 | EnemyHealthUI |
+
+## 当前已知问题
+
+1. **连招推进时机不匹配** — `PrepareComboTransition(stage+1)` 设置 Animator 条件后，Exit Time 控制的 Transition 与代码实时推进 `ComboStage` 逻辑冲突
+2. **锁定期间攻击面向** — 连招阶段每帧调用 `FaceTarget()` 确保面朝目标
+
+## 待办事项
+
+1. 连招系统重新设计（当前预备推进机制不稳定）
+2. 实现敌人死亡动画和逻辑（`EnemyState.Dead` 已定义未实现）
+3. 音频系统支持多音效同时播放
+4. 怪物受击动画配置 Animation Event `OnGetHitEnd`
+
+## 状态流程
+
+```
+无输入 ──→ Idle（静止）
+有输入 ──→ Walk（5 速度）
+Shift + 有输入 ──→ Run（10 速度）
+鼠标左键 ──→ 五段连击（攻击中锁定移动）
+鼠标中键 ──→ 锁定/解锁目标（锁定后移动方式切换）
+受击 ──→ GetHit（1s 后自动切回 Idle）
+```
 
 ## 如何运行
 
-1. 用 Unity 打开项目
+1. 用 Unity 2022.3.46f1 打开项目
 2. 场景中创建一个空物体 `InputSystem`，挂载 `InputReader` 脚本
-3. 创建一个 `CameraPivot` 空物体，挂载 `CameraController` 脚本，
-   将 MainCamera 设为子物体，将 Player 拖入 Target 槽位
-4. Player 身上挂载 `Player` 脚本 + `Animator` + `CharacterController` + `Health`
+3. 创建一个 `CameraPivot` 空物体，挂载 `CameraController` 脚本，将 MainCamera 设为子物体，将 Player 拖入 Target 槽位
+4. Player 身上挂载 `Player` + `Animator` + `CharacterController` + `Health`
 5. 玩家的剑上挂载 `WeaponDamage` + `Box Collider(Is Trigger)` + `Rigidbody(IsKinematic)`
 6. 怪物身上挂载 `Enemy` + `Animator` + `NavMeshAgent` + `Collider` + `Health`，Tag 设为 `Enemy`
 7. 在 Enemy 的 Inspector 中将 Player 拖入 `Player Obj` 字段
