@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public static CameraController Instance { get; private set; }
+
     [SerializeField] private Transform m_Target;
     [SerializeField] private float m_MouseSensitivity = 1f;
     [SerializeField] private float m_Distance = 5f;
@@ -13,6 +15,17 @@ public class CameraController : MonoBehaviour
     private Player m_Player;
     private float m_XRotation;
     private float m_YRotation;
+    private Vector3 m_OriginalCameraLocalPos;
+
+    // 屏幕震动
+    private float m_ShakeIntensity;
+    private float m_ShakeDuration;
+    private float m_ShakeTimer;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -20,6 +33,8 @@ public class CameraController : MonoBehaviour
 
         if (m_CameraChild == null)
             m_CameraChild = GetComponentInChildren<Camera>();
+
+        m_OriginalCameraLocalPos = m_CameraChild.transform.localPosition;
 
         if (m_Target != null)
             m_Player = m_Target.GetComponent<Player>();
@@ -41,6 +56,39 @@ public class CameraController : MonoBehaviour
         }
 
         transform.position = m_Target.position;
+
+        // 屏幕震动：偏移子摄像机
+        UpdateShake();
+    }
+
+    /// <summary>
+    /// 触发屏幕震动。
+    /// </summary>
+    public void Shake(float intensity, float duration)
+    {
+        m_ShakeIntensity = intensity;
+        m_ShakeDuration = duration;
+        m_ShakeTimer = duration;
+    }
+
+    private void UpdateShake()
+    {
+        if (m_ShakeTimer <= 0f)
+        {
+            m_CameraChild.transform.localPosition = m_OriginalCameraLocalPos;
+            return;
+        }
+
+        m_ShakeTimer -= Time.deltaTime;
+
+        float t = m_ShakeTimer / m_ShakeDuration;                // 1 → 0
+        float decay = Mathf.Lerp(0f, 1f, t);                     // 震动幅度随时间衰减
+        float currentIntensity = m_ShakeIntensity * decay;
+
+        Vector3 offset = Random.insideUnitSphere * currentIntensity;
+        offset.z *= 0.3f;
+
+        m_CameraChild.transform.localPosition = m_OriginalCameraLocalPos + offset;
     }
 
     private void UpdateFreeCamera()
