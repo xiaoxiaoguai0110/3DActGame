@@ -10,6 +10,9 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float m_Height = 2f;
     [SerializeField] private float m_LockFollowSpeed = 5f;
 
+    [Header("开场动画")]
+    [SerializeField] private float m_IntroTransitionDuration = 2.5f;
+
     [SerializeField] private Camera m_CameraChild;
 
     private Player m_Player;
@@ -22,6 +25,15 @@ public class CameraController : MonoBehaviour
     private float m_ShakeDuration;
     private float m_ShakeTimer;
 
+    // 开场动画
+    private enum CameraMode { Intro, Transition, Normal }
+    private CameraMode m_CamMode = CameraMode.Normal;
+    private float m_TransitionTimer;
+    private Vector3 m_TransitionStartPos;
+    private Quaternion m_TransitionStartRot;
+    private Vector3 m_TransitionEndPos;
+    private Quaternion m_TransitionEndRot;
+
     private void Awake()
     {
         Instance = this;
@@ -29,8 +41,6 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-
         if (m_CameraChild == null)
             m_CameraChild = GetComponentInChildren<Camera>();
 
@@ -44,6 +54,28 @@ public class CameraController : MonoBehaviour
     {
         if (m_Target == null) return;
 
+        if (m_CamMode == CameraMode.Transition)
+        {
+            m_TransitionTimer += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(m_TransitionTimer / m_IntroTransitionDuration);
+            float smoothT = t * t * (3f - 2f * t); // smoothstep
+
+            transform.position = Vector3.Lerp(m_TransitionStartPos, m_TransitionEndPos, smoothT);
+            transform.rotation = Quaternion.Slerp(m_TransitionStartRot, m_TransitionEndRot, smoothT);
+
+            if (t >= 1f)
+            {
+                m_CamMode = CameraMode.Normal;
+                Cursor.lockState = CursorLockMode.Locked;
+                Time.timeScale = 1f;
+                MainMenuUI.IsInputEnabled = true;
+            }
+            return;
+        }
+
+        if (m_CamMode == CameraMode.Intro) return;
+
+        // Normal mode
         Transform lockTarget = m_Player != null ? m_Player.GetLockOnTarget() : null;
 
         if (lockTarget != null)
@@ -57,8 +89,33 @@ public class CameraController : MonoBehaviour
 
         transform.position = m_Target.position;
 
-        // 屏幕震动：偏移子摄像机
         UpdateShake();
+    }
+
+    /// <summary>
+    /// 冻结摄像机在当前位置，不跟随玩家。
+    /// </summary>
+    public void FreezeAtCurrentPosition()
+    {
+        m_CamMode = CameraMode.Intro;
+    }
+
+    /// <summary>
+    /// 从当前冻结位置平滑移动到角色身后（正常跟随位置）。
+    /// </summary>
+    public void BeginGameTransition()
+    {
+        m_CamMode = CameraMode.Transition;
+        m_TransitionTimer = 0f;
+        m_TransitionStartPos = transform.position;
+        m_TransitionStartRot = transform.rotation;
+
+        // 计算目标：摄像机在角色身后（即正常跟随位置）
+        m_YRotation = m_Target.eulerAngles.y;
+        m_XRotation = 10f;
+
+        m_TransitionEndPos = m_Target.position;
+        m_TransitionEndRot = Quaternion.Euler(m_XRotation, m_YRotation, 0f);
     }
 
     /// <summary>
@@ -81,8 +138,8 @@ public class CameraController : MonoBehaviour
 
         m_ShakeTimer -= Time.deltaTime;
 
-        float t = m_ShakeTimer / m_ShakeDuration;                // 1 → 0
-        float decay = Mathf.Lerp(0f, 1f, t);                     // 震动幅度随时间衰减
+        float t = m_ShakeTimer / m_ShakeDuration;
+        float decay = Mathf.Lerp(0f, 1f, t);
         float currentIntensity = m_ShakeIntensity * decay;
 
         Vector3 offset = Random.insideUnitSphere * currentIntensity;
@@ -104,21 +161,17 @@ public class CameraController : MonoBehaviour
 
     private void UpdateLockedCamera(Transform lockTarget)
     {
-        // 计算从摄像机指向锁定目标的水平方向
         Vector3 targetDirection = lockTarget.position - transform.position;
         targetDirection.y = 0f;
 
         if (targetDirection == Vector3.zero) return;
 
-        // 计算目标水平旋转角度
         float targetYRotation = Quaternion.LookRotation(targetDirection).eulerAngles.y;
 
-        // 计算目标垂直角度（根据目标高度自动调整）
         Vector3 directionToTarget = (lockTarget.position - transform.position).normalized;
         float targetXRotation = -Mathf.Asin(directionToTarget.y) * Mathf.Rad2Deg;
         targetXRotation = Mathf.Clamp(targetXRotation, -30f, 80f);
 
-        // 平滑旋转到目标角度
         m_YRotation = Mathf.LerpAngle(m_YRotation, targetYRotation, m_LockFollowSpeed * Time.deltaTime);
         m_XRotation = Mathf.LerpAngle(m_XRotation, targetXRotation, m_LockFollowSpeed * Time.deltaTime);
 

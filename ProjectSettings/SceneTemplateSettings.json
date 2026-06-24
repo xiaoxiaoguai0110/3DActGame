@@ -95,6 +95,27 @@
             "userAdded": false,
             "type": "UnityEngine.ShaderVariantCollection",
             "defaultInstantiationMode": 1
+        },
+        {
+            "userAdded": false,
+            "type": "UnityEngine.Texture",
+            "defaultInstantiationMode": 0
+        },
+        {
+            "userAdded": false,
+            "type": "UnityEngine.Texture2D",
+            "defaultInstantiationMode": 0
+        },
+        {
+            "userAdded": false,
+            "type": "UnityEngine.Timeline.TimelineAsset",
+            "defaultInstantiationMode": 0
         }
-    ]
+    ],
+    "defaultDependencyTypeInfo": {
+        "userAdded": false,
+        "type": "",
+        "defaultInstantiationMode": 0
+    },
+    "newSceneOverride": 0
 }

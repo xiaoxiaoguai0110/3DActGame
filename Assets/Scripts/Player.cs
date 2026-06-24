@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class Player : MonoBehaviour
     private PlayerState m_CurrentState;
     private Animator m_Animator;
     private CharacterController m_Controller;
+    private Health m_Health;
 
     private int m_ComboStage;
     private int m_PreparedComboStage;
@@ -25,23 +27,40 @@ public class Player : MonoBehaviour
     private bool m_HasEnteredComboAnimation;
     private bool m_QueuedAttackAfterPrepared;
 
+    private float m_DeadTimer;
+
     private void Start()
     {
         m_CameraTransform = Camera.main.transform;
         m_Animator = GetComponent<Animator>();
         m_Controller = GetComponent<CharacterController>();
+        m_Health = GetComponent<Health>();
         InputReader.Instance.OnAttack += HandleAttack;
         InputReader.Instance.OnLock += HandleLock;
+
+        if (m_Health != null)
+            m_Health.OnHealthChanged += HandlePlayerGetHit;
     }
 
     private void OnDisable()
     {
         InputReader.Instance.OnAttack -= HandleAttack;
         InputReader.Instance.OnLock -= HandleLock;
+
+        if (m_Health != null)
+            m_Health.OnHealthChanged -= HandlePlayerGetHit;
     }
 
     private void Update()
     {
+        if (m_CurrentState == PlayerState.Dead)
+        {
+            UpdateDead();
+            return;
+        }
+
+        if (!MainMenuUI.IsInputEnabled) return;
+
         if (m_LockOnTarget != null)
         {
             Health targetHealth = m_LockOnTarget.GetComponent<Health>();
@@ -225,6 +244,8 @@ public class Player : MonoBehaviour
 
     private void HandleLock()
     {
+        if (!MainMenuUI.IsInputEnabled) return;
+
         if (m_LockOnTarget != null)
         {
             m_LockOnTarget = null;
@@ -284,6 +305,8 @@ public class Player : MonoBehaviour
 
     private void HandleAttack()
     {
+        if (!MainMenuUI.IsInputEnabled) return;
+
         if (m_ComboStage == 0)
         {
             StartCombo(1);
@@ -359,10 +382,54 @@ public class Player : MonoBehaviour
         Invoke(nameof(DisableDamage), 0.5f);
     }
 
+    /// <summary>
+    /// 由 Health.OnHealthChanged 触发，处理玩家受击或死亡。
+    /// </summary>
+    private void HandlePlayerGetHit()
+    {
+        if (m_CurrentState == PlayerState.Dead) return;
+
+        // HP归零 → 死亡
+        if (m_Health.GetCurrentHP() <= 0f)
+        {
+            m_CurrentState = PlayerState.Dead;
+            m_Controller.enabled = false;
+            ResetCombo();
+            DisableDamage();
+            m_LockOnTarget = null;
+            m_Animator.SetTrigger("OnDead");
+            m_DeadTimer = 3f;
+            return;
+        }
+
+        m_Animator.SetTrigger("OnGetHit");
+    }
+
+    /// <summary>
+    /// 死亡状态：等待动画播完，然后重载场景回到主菜单。
+    /// </summary>
+    private void UpdateDead()
+    {
+        m_DeadTimer -= Time.deltaTime;
+        if (m_DeadTimer <= 0f)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+    }
+
+    /// <summary>
+    /// 播放玩家入场动画（开场/主菜单点击开始后调用）。
+    /// </summary>
+    public void PlayIntroAnimation()
+    {
+        m_Animator.SetTrigger("OnIntro");
+    }
+
     private enum PlayerState
     {
         Idle,
         Walk,
-        Run
+        Run,
+        Dead
     }
 }

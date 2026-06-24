@@ -25,6 +25,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float m_AttackDamage = 20f;
     [SerializeField] private float m_AttackCooldown = 3f;
     [SerializeField] private GameObject playerObj;
+    [SerializeField] private GameObject bloodPrefab;
+    [SerializeField] private Transform bloodSpawn;
 
     private Animator m_Animator;
     private NavMeshAgent m_Agent;
@@ -85,6 +87,9 @@ public class Enemy : MonoBehaviour
             case EnemyState.GetHit:
                 m_Animator.SetFloat("MoveSpeed", 0f);
                 UpdateGetHit();
+                break;
+            case EnemyState.Dead:
+                UpdateDead();
                 break;
         }
     }
@@ -192,10 +197,34 @@ public class Enemy : MonoBehaviour
     }
 
     private float m_GetHitTimer;
+    private float m_DeadTimer;
 
     private void HandleGetHit()
     {
         if (m_CurrentState == EnemyState.Dead) return;
+
+        // 受击位置生成血效，1s 后销毁
+        if (bloodPrefab != null && bloodSpawn != null)
+        {
+            GameObject blood = Instantiate(bloodPrefab, bloodSpawn.position, bloodSpawn.rotation);
+            Destroy(blood, 1f);
+        }
+
+        // 屏幕震动
+        if (CameraController.Instance != null)
+            CameraController.Instance.Shake(0.3f, 0.15f);
+
+        // HP归零 → 死亡
+        if (m_Health.GetCurrentHP() <= 0f)
+        {
+            m_CurrentState = EnemyState.Dead;
+            m_Agent.ResetPath();
+            m_Agent.velocity = Vector3.zero;
+            m_Agent.isStopped = true;
+            m_Animator.SetTrigger("OnDead");
+            m_DeadTimer = 2.7f;
+            return;
+        }
 
         m_CurrentState = EnemyState.GetHit;
         m_Agent.ResetPath();
@@ -203,6 +232,15 @@ public class Enemy : MonoBehaviour
         m_Animator.SetTrigger("OnGetHit");
 
         m_GetHitTimer = 1f;
+    }
+
+    private void UpdateDead()
+    {
+        m_DeadTimer -= Time.deltaTime;
+        if (m_DeadTimer <= 0f)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void UpdateGetHit()
