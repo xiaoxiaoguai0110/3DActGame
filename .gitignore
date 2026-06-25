@@ -1,4 +1,4 @@
-# Unity
+# ── Unity 临时/构建文件 ──
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
@@ -7,79 +7,32 @@
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
 
-# Visual Studio
+# ── IDE ──
 *.csproj
 *.sln
 *.suo
 *.user
 *.userprefs
 .vs/
-
-# JetBrains Rider
 .idea/
 *.sln.DotSettings
 
-# macOS
+# ── 操作系统 ──
 .DS_Store
+Thumbs.db
 
-# Unity generated
-Assets/AssetStoreTools*
-**/*.meta
-**/*.unity
-**/*.prefab
-**/*.asset
+# ── 日志 ──
+*.log
 
-# Art assets (fbx, models, textures, audio)
-**/*.fbx
-**/*.blend
-**/*.png
-**/*.jpg
-**/*.jpeg
-**/*.tga
-**/*.psd
-**/*.tiff
-**/*.mp3
-**/*.wav
-**/*.ogg
-**/*.wma
-**/*.avi
-**/*.mp4
-**/*.mov
-**/*.fbx.meta
-**/*.blend.meta
-**/*.png.meta
-**/*.jpg.meta
-**/*.jpeg.meta
-**/*.tga.meta
-**/*.psd.meta
-**/*.tiff.meta
-**/*.mp3.meta
-**/*.wav.meta
-**/*.ogg.meta
-**/*.wma.meta
-**/*.avi.meta
-**/*.mp4.meta
-**/*.mov.meta
-
-# Packages
+# ── Packages（自动生成） ──
 Packages/
 
-# Unity generated assets
-**/*.controller
-**/*.mat
-**/*.physicMaterial
-**/*.physicsMaterial
-**/*.anim
-**/*.overrideController
-**/*.mask
-**/*.renderTexture
-**/*.terrainlayer
-
-# Scene preview / lighting
-**/*.lighting
-
-# Terrain
-**/*.terrainlayer
-
-# Logs
-*.log
+# ── 第三方资源包（太大不上传） ──
+Assets/100BestEffectPack/
+Assets/Flooded_Grounds/
+Assets/HEROIC FANTASY CREATURES FULL PACK VOL 1/
+Assets/Knights_(Pack)/
+Assets/TextMesh Pro/
+Assets/Rapier_Anim_Set/
+Assets/Combat_Whooshes_Sounds/
+Assets/___www.unityassetcollection.com___.txt

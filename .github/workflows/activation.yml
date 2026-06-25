@@ -1,0 +1,14 @@
+name: 🎮 Unity License Activation
+
+on:
+  workflow_dispatch:
+
+jobs:
+  activation:
+    name: Request activation file
+    runs-on: ubuntu-latest
+    steps:
+      - name: Request manual activation file
+        uses: game-ci/unity-request-activation-file@v3
+        with:
+          unityVersion: 2022.3.62f1c1

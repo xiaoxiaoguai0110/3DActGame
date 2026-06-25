@@ -1,0 +1,2373 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4280869302120465432
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503352}
+  m_Layer: 0
+  m_Name: root
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503352
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465432}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503736}
+  m_Father: {fileID: 4280869302120503354}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!1 &4280869302120465434
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503354}
+  - component: {fileID: 4280869302113056344}
+  - component: {fileID: 3058986588229369921}
+  - component: {fileID: 7640659917361299128}
+  - component: {fileID: 5225888779874377201}
+  - component: {fileID: 7686135926608086900}
+  m_Layer: 0
+  m_Name: Enemy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503354
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465434}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -16.31, y: -6.79, z: 2.09}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503352}
+  - {fileID: 4280869302120503356}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!95 &4280869302113056344
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465434}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: d4e14722b8ee5a346a6f672825e4c3a7, type: 3}
+  m_Controller: {fileID: 9100000, guid: 902a27dfcabbebc499a42c42dcc7c0bc, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!195 &3058986588229369921
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465434}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.71
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2.06
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!54 &7640659917361299128
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465434}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
+--- !u!65 &5225888779874377201
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465434}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2, z: 3.5}
+  m_Center: {x: 0, y: 1, z: 0.7}
+--- !u!114 &7686135926608086900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bc6ba32311116c4291087dd3c4805b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CurrentState: 2
+  m_Animator: {fileID: 4280869302113056344}
+--- !u!1 &4280869302120465436
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503356}
+  - component: {fileID: 4280869302108899480}
+  m_Layer: 0
+  m_Name: SK_Manticora
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503356
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465436}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503354}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &4280869302108899480
+SkinnedMeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465436}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 3
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 592bdd2d6ce782d42adf5eb6505b5bbb, type: 2}
+  - {fileID: 2100000, guid: 74766e76a18def147895c7c113dbd2bd, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  serializedVersion: 2
+  m_Quality: 4
+  m_UpdateWhenOffscreen: 1
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 4300000, guid: d4e14722b8ee5a346a6f672825e4c3a7, type: 3}
+  m_Bones:
+  - {fileID: 4280869302120503738}
+  - {fileID: 4280869302120503740}
+  - {fileID: 4280869302120503742}
+  - {fileID: 4280869302120503728}
+  - {fileID: 4280869302120503730}
+  - {fileID: 4280869302120503732}
+  - {fileID: 4280869302120503720}
+  - {fileID: 4280869302120503724}
+  - {fileID: 4280869302120503734}
+  - {fileID: 4280869302120503722}
+  - {fileID: 4280869302120503726}
+  - {fileID: 4280869302120503712}
+  - {fileID: 4280869302120503714}
+  - {fileID: 4280869302120503716}
+  - {fileID: 4280869302120503718}
+  - {fileID: 4280869302120503704}
+  - {fileID: 4280869302120503706}
+  - {fileID: 4280869302120503708}
+  - {fileID: 4280869302120503710}
+  - {fileID: 4280869302120503698}
+  - {fileID: 4280869302120503684}
+  - {fileID: 4280869302120503680}
+  - {fileID: 4280869302120503694}
+  - {fileID: 4280869302120503692}
+  - {fileID: 4280869302120503754}
+  - {fileID: 4280869302120503800}
+  - {fileID: 4280869302120503752}
+  - {fileID: 4280869302120503690}
+  - {fileID: 4280869302120503764}
+  - {fileID: 4280869302120503766}
+  - {fileID: 4280869302120503682}
+  - {fileID: 4280869302120503788}
+  - {fileID: 4280869302120503778}
+  - {fileID: 4280869302120503756}
+  - {fileID: 4280869302120503686}
+  - {fileID: 4280869302120503758}
+  - {fileID: 4280869302120503744}
+  - {fileID: 4280869302120503746}
+  - {fileID: 4280869302120503748}
+  - {fileID: 4280869302120503750}
+  - {fileID: 4280869302120503696}
+  - {fileID: 4280869302120503702}
+  - {fileID: 4280869302120503786}
+  - {fileID: 4280869302120503688}
+  - {fileID: 4280869302120503776}
+  - {fileID: 4280869302120503700}
+  - {fileID: 4280869302120503790}
+  - {fileID: 4280869302120503804}
+  - {fileID: 4280869302120503762}
+  - {fileID: 4280869302120503774}
+  - {fileID: 4280869302120503770}
+  - {fileID: 4280869302120503780}
+  - {fileID: 4280869302120503760}
+  - {fileID: 4280869302120503772}
+  - {fileID: 4280869302120503768}
+  - {fileID: 4280869302120503802}
+  - {fileID: 4280869302120503784}
+  - {fileID: 4280869302120503798}
+  - {fileID: 4280869302120503796}
+  - {fileID: 4280869302120503794}
+  - {fileID: 4280869302120503806}
+  - {fileID: 4280869302120503792}
+  - {fileID: 4280869302120503782}
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 4280869302120503682}
+  m_AABB:
+    m_Center: {x: -0.76022434, y: -1.0228709, z: 0.0000030398369}
+    m_Extent: {x: 2.5915048, y: 2.8322515, z: 1.0515647}
+  m_DirtyAABB: 0
+--- !u!1 &4280869302120465440
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503744}
+  m_Layer: 0
+  m_Name: CHIMERA_ Tail2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503744
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465440}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.00000015229996, y: 0.0000010232309, z: -0.2371356, w: 0.97147655}
+  m_LocalPosition: {x: -0.8195801, y: -0.0005879211, z: -0.0000000017127604}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503746}
+  m_Father: {fileID: 4280869302120503758}
+  m_LocalEulerAnglesHint: {x: -5.053406, y: 16.411276, z: -40.931892}
+--- !u!1 &4280869302120465442
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503746}
+  m_Layer: 0
+  m_Name: CHIMERA_ Tail3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503746
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465442}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.00000029448037, y: 0.000001312499, z: -0.3043621, w: 0.95255643}
+  m_LocalPosition: {x: -0.8318634, y: -0.00064666744, z: -0.0000000020128208}
+  m_LocalScale: {x: 0.9999999, y: 0.9999999, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503748}
+  m_Father: {fileID: 4280869302120503744}
+  m_LocalEulerAnglesHint: {x: -4.156075, y: 11.069368, z: -34.83314}
+--- !u!1 &4280869302120465444
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503748}
+  m_Layer: 0
+  m_Name: CHIMERA_ Tail4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503748
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465444}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.00000009077356, y: 0.0000011517668, z: -0.4637581, w: 0.88596183}
+  m_LocalPosition: {x: -0.997008, y: -0.00051361084, z: -0.0000000013911631}
+  m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503750}
+  m_Father: {fileID: 4280869302120503746}
+  m_LocalEulerAnglesHint: {x: -5.976722, y: -7.330446, z: -46.96207}
+--- !u!1 &4280869302120465446
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503750}
+  m_Layer: 0
+  m_Name: CHIMERA_ Tail5
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503750
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465446}
+  serializedVersion: 2
+  m_LocalRotation: {x: -1.1328049e-13, y: 0.000001051718, z: -0.37918866, w: 0.9253194}
+  m_LocalPosition: {x: -1.1321478, y: -0.0005480957, z: -0.000000001520384}
+  m_LocalScale: {x: 0.9999999, y: 0.9999999, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503748}
+  m_LocalEulerAnglesHint: {x: -33.445026, y: -30.028332, z: -43.080524}
+--- !u!1 &4280869302120465448
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503752}
+  m_Layer: 0
+  m_Name: CHIMERA_ Spine1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503752
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465448}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 9.436896e-16, z: -0, w: 1}
+  m_LocalPosition: {x: -0.54828095, y: -0.00043655394, z: -0.0000000012110104}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503754}
+  m_Father: {fileID: 4280869302120503766}
+  m_LocalEulerAnglesHint: {x: 0.29584202, y: -0.3753261, z: -0.105041504}
+--- !u!1 &4280869302120465450
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503754}
+  m_Layer: 0
+  m_Name: CHIMERA_ Spine2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503754
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465450}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 9.436896e-16, z: -0, w: 1}
+  m_LocalPosition: {x: -0.548281, y: -0.00043670653, z: -0.0000000012107193}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503742}
+  - {fileID: 4280869302120503692}
+  - {fileID: 4280869302120503800}
+  m_Father: {fileID: 4280869302120503752}
+  m_LocalEulerAnglesHint: {x: 0.2958417, y: -0.37532616, z: -0.105041504}
+--- !u!1 &4280869302120465452
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503756}
+  m_Layer: 0
+  m_Name: CHIMERA_ Tail
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503756
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465452}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.00000085194927, y: -0.00000053247584, z: 0.9153793, w: 0.4025925}
+  m_LocalPosition: {x: 0.34539932, y: -0.23206252, z: 0.000000055733544}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503758}
+  m_Father: {fileID: 4280869302120503682}
+  m_LocalEulerAnglesHint: {x: 19.488459, y: 3.4977007, z: 138.23448}
+--- !u!1 &4280869302120465454
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503758}
+  m_Layer: 0
+  m_Name: CHIMERA_ Tail1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503758
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465454}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.00000005799618, y: 0.0000009997688, z: -0.2371356, w: 0.97147655}
+  m_LocalPosition: {x: -0.6961145, y: -0.00057899475, z: -0.0000000015727709}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503744}
+  m_Father: {fileID: 4280869302120503756}
+  m_LocalEulerAnglesHint: {x: -11.740593, y: 15.3003845, z: -38.39654}
+--- !u!1 &4280869302120465456
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503760}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Toe3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503760
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465456}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.471974, y: -0.26099986, z: -0.40751436, w: 0.7369204}
+  m_LocalPosition: {x: -0.037481707, y: 0.004390259, z: -0.12907872}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503762}
+  m_Father: {fileID: 4280869302120503786}
+  m_LocalEulerAnglesHint: {x: -65.2765, y: -0.000053075164, z: -57.8848}
+--- !u!1 &4280869302120465458
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503762}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Toe31
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503762
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465458}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.000000010858447, y: -0.000000028524626, z: -0.12856132, w: 0.9917016}
+  m_LocalPosition: {x: -0.14518844, y: 0.000000038146972, z: 0.000000076293944}
+  m_LocalScale: {x: 1, y: 1, z: 0.99999994}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503760}
+  m_LocalEulerAnglesHint: {x: -0.0000006403381, y: -0.00000053361146, z: 0.0000017075686}
+--- !u!1 &4280869302120465460
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503764}
+  m_Layer: 0
+  m_Name: CHIMERA_ R UpperArm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503764
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465460}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.46544877, y: 0.3316911, z: 0.37964568, w: 0.7274666}
+  m_LocalPosition: {x: -0.461864, y: 0.00000015258789, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503788}
+  m_Father: {fileID: 4280869302120503800}
+  m_LocalEulerAnglesHint: {x: 18.208324, y: 67.81999, z: 53.938217}
+--- !u!1 &4280869302120465462
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503766}
+  m_Layer: 0
+  m_Name: CHIMERA_ Spine
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503766
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465462}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0000020804762, y: 0.00000069367604, z: -0.00039815903, w: 0.99999994}
+  m_LocalPosition: {x: -0.29560584, y: -0.00043655394, z: 0.0000004105517}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503752}
+  m_Father: {fileID: 4280869302120503682}
+  m_LocalEulerAnglesHint: {x: 0.16179588, y: 0.12294285, z: -5.888548}
+--- !u!1 &4280869302120465464
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503768}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Toe1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503768
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465464}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0149075845, y: -0.015254557, z: -0.70694596, w: 0.7069459}
+  m_LocalPosition: {x: -0.21296966, y: 0.16786705, z: -0.011850128}
+  m_LocalScale: {x: 1, y: 0.99999994, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503770}
+  m_Father: {fileID: 4280869302120503786}
+  m_LocalEulerAnglesHint: {x: -2.4441533, y: -0.028143035, z: -89.999405}
+--- !u!1 &4280869302120465466
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503770}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Toe11
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503770
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465466}
+  serializedVersion: 2
+  m_LocalRotation: {x: -1.8974333e-10, y: 0.000000007408442, z: 1.4057025e-18, w: 1}
+  m_LocalPosition: {x: -0.11410026, y: 0.0000000011920929, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503768}
+  m_LocalEulerAnglesHint: {x: 0.000000018864071, y: -0.000000958385, z: 8.50801e-14}
+--- !u!1 &4280869302120465468
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503772}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Toe2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503772
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465468}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.16968964, y: -0.16968967, z: -0.686444, w: 0.6864441}
+  m_LocalPosition: {x: -0.21265803, y: 0.14077476, z: -0.14183888}
+  m_LocalScale: {x: 1, y: 0.99999994, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503774}
+  m_Father: {fileID: 4280869302120503786}
+  m_LocalEulerAnglesHint: {x: -27.770401, y: -0.000010613967, z: -89.999985}
+--- !u!1 &4280869302120465470
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503774}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Toe21
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503774
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465470}
+  serializedVersion: 2
+  m_LocalRotation: {x: -2.770645e-18, y: -0.0000000059499143, z: -4.656613e-10, w: 1}
+  m_LocalPosition: {x: -0.1171859, y: 0, z: -0.000000019073486}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503772}
+  m_LocalEulerAnglesHint: {x: -0.000000026680675, y: 0.00000038666047, z: 1.0658141e-14}
+--- !u!1 &4280869302120465792
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503712}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Foot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503712
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465792}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.1077085, y: 0.03980233, z: 0.15014881, w: 0.9819725}
+  m_LocalPosition: {x: -0.2757247, y: 0, z: 0}
+  m_LocalScale: {x: 0.9999998, y: 1, z: 0.99999994}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503706}
+  - {fileID: 4280869302120503710}
+  - {fileID: 4280869302120503698}
+  - {fileID: 4280869302120503702}
+  m_Father: {fileID: 4280869302120503718}
+  m_LocalEulerAnglesHint: {x: -13.235985, y: 2.7052493, z: 18.447273}
+--- !u!1 &4280869302120465794
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503714}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Forearm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503714
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465794}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.000000007920263, y: 7.660644e-10, z: 0.25934947, w: 0.96578354}
+  m_LocalPosition: {x: -0.6650538, y: 0, z: 0}
+  m_LocalScale: {x: 0.9999999, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503716}
+  m_Father: {fileID: 4280869302120503690}
+  m_LocalEulerAnglesHint: {x: 0.00000065219086, y: -0.0000005908891, z: 61.85929}
+--- !u!1 &4280869302120465796
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503716}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503716
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465796}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.086131886, y: 0.060869563, z: 0.1186077, w: 0.9873239}
+  m_LocalPosition: {x: -0.6548823, y: 0.000000076293944, z: -0.000000038146972}
+  m_LocalScale: {x: 0.99999994, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503728}
+  - {fileID: 4280869302120503732}
+  - {fileID: 4280869302120503720}
+  - {fileID: 4280869302120503724}
+  m_Father: {fileID: 4280869302120503714}
+  m_LocalEulerAnglesHint: {x: -15.872289, y: 14.896151, z: 2.196556}
+--- !u!1 &4280869302120465798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503718}
+  m_Layer: 0
+  m_Name: CHIMERA_ L HorseLink
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503718
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465798}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.000000009112198, y: -0.000000012364878, z: -0.38029274, w: 0.9248662}
+  m_LocalPosition: {x: -0.5611884, y: -0.000000076293944, z: 0}
+  m_LocalScale: {x: 1.0000001, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503712}
+  m_Father: {fileID: 4280869302120503740}
+  m_LocalEulerAnglesHint: {x: -0.000000099020326, y: -0.0000005955418, z: -54.440178}
+--- !u!1 &4280869302120465800
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503720}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Finger2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503720
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465800}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.043636486, y: 0.0067251413, z: 0.5003277, w: 0.86470973}
+  m_LocalPosition: {x: -0.2437093, y: -0.024538802, z: 0.011621227}
+  m_LocalScale: {x: 0.99999994, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503722}
+  m_Father: {fileID: 4280869302120503716}
+  m_LocalEulerAnglesHint: {x: -4.7147636, y: -1.8419902, z: 60.183834}
+--- !u!1 &4280869302120465802
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503722}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Finger21
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503722
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465802}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0000000037222254, y: 1.9072413e-10, z: 0.019953346, w: 0.9998009}
+  m_LocalPosition: {x: -0.12535271, y: -0.000000019073486, z: 0.000000019073486}
+  m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503720}
+  m_LocalEulerAnglesHint: {x: 0.0000005152594, y: -0.0000011452446, z: 4.3508887}
+--- !u!1 &4280869302120465804
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503724}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Finger3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503724
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465804}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.10035728, y: 0.1734338, z: 0.48982495, w: 0.84848136}
+  m_LocalPosition: {x: -0.22709045, y: -0.0007167816, z: 0.11883308}
+  m_LocalScale: {x: 0.9999999, y: 1, z: 0.99999994}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503726}
+  m_Father: {fileID: 4280869302120503716}
+  m_LocalEulerAnglesHint: {x: -19.889484, y: 12.030267, z: 57.878487}
+--- !u!1 &4280869302120465806
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503726}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Finger31
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503726
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465806}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0000000015897869, y: 0.000000025902409, z: 0.0105375, w: 0.9999445}
+  m_LocalPosition: {x: -0.11403045, y: 0, z: 0.000000095367426}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503724}
+  m_LocalEulerAnglesHint: {x: -0.00000026851126, y: 0.0000035291591, z: 4.3508883}
+--- !u!1 &4280869302120465808
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503728}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Finger0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503728
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465808}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.2391735, y: -0.27418482, z: 0.20560767, w: 0.9084846}
+  m_LocalPosition: {x: -0.09531444, y: -0.002454376, z: -0.14443614}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503730}
+  m_Father: {fileID: 4280869302120503716}
+  m_LocalEulerAnglesHint: {x: 33.18333, y: -28.53803, z: 16.837889}
+--- !u!1 &4280869302120465810
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503730}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Finger01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503730
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465810}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0000000020193385, y: 0.0000000081350215, z: 0.24091648, w: 0.9705459}
+  m_LocalPosition: {x: -0.10448261, y: 0, z: 0.000000076293944}
+  m_LocalScale: {x: 1, y: 1.0000001, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503728}
+  m_LocalEulerAnglesHint: {x: -0.000000038130622, y: -0.0000013494076, z: -20.053522}
+--- !u!1 &4280869302120465812
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503732}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Finger1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503732
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465812}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.112426795, y: -0.19511682, z: 0.48719636, w: 0.84375906}
+  m_LocalPosition: {x: -0.24068832, y: -0.019160613, z: -0.07591316}
+  m_LocalScale: {x: 1, y: 1, z: 1.0000001}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503734}
+  m_Father: {fileID: 4280869302120503716}
+  m_LocalEulerAnglesHint: {x: 22.323935, y: -13.740035, z: 57.28159}
+--- !u!1 &4280869302120465814
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503734}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Finger11
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503734
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465814}
+  serializedVersion: 2
+  m_LocalRotation: {x: 1.609024e-10, y: -0.0000000075425435, z: 0.021327792, w: 0.99977255}
+  m_LocalPosition: {x: -0.109758526, y: 0, z: -0.000000076293944}
+  m_LocalScale: {x: 0.9999998, y: 0.99999994, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503732}
+  m_LocalEulerAnglesHint: {x: 0.00000026292736, y: -0.0000006422537, z: 4.350889}
+--- !u!1 &4280869302120465816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503736}
+  m_Layer: 0
+  m_Name: CHIMERA_
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503736
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465816}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.50000036, y: -0.49999964, z: 0.4999997, w: 0.5000003}
+  m_LocalPosition: {x: -0, y: 0.77042997, z: 1.6517198}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503682}
+  m_Father: {fileID: 4280869302120503352}
+  m_LocalEulerAnglesHint: {x: 88.599174, y: 5.009792, z: 95.42071}
+--- !u!1 &4280869302120465818
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503738}
+  m_Layer: 0
+  m_Name: CHIMERA_ Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503738
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465818}
+  serializedVersion: 2
+  m_LocalRotation: {x: -2.165429e-14, y: -0.00000027495375, z: 0.09913313, w: 0.9950742}
+  m_LocalPosition: {x: -0.20506927, y: 0.00000015258789, z: 2.910383e-13}
+  m_LocalScale: {x: 1.0000002, y: 1.0000002, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503684}
+  m_Father: {fileID: 4280869302120503680}
+  m_LocalEulerAnglesHint: {x: -4.6771293, y: 4.7511044, z: -18.370083}
+--- !u!1 &4280869302120465820
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503740}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Calf
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503740
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465820}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.000000011728676, y: -0.000000001102756, z: 0.2260336, w: 0.97411954}
+  m_LocalPosition: {x: -0.6842395, y: 0, z: 0}
+  m_LocalScale: {x: 0.99999994, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503718}
+  m_Father: {fileID: 4280869302120503704}
+  m_LocalEulerAnglesHint: {x: -0.00000077239315, y: -0.000001107141, z: 36.663605}
+--- !u!1 &4280869302120465822
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503742}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Clavicle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503742
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465822}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.5761394, y: 0.18479773, z: 0.7844544, w: -0.13617808}
+  m_LocalPosition: {x: -0.55367875, y: -0.11131866, z: 0.032425605}
+  m_LocalScale: {x: 0.99999994, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503690}
+  m_Father: {fileID: 4280869302120503754}
+  m_LocalEulerAnglesHint: {x: -7.6438966, y: -74.32218, z: -154.50613}
+--- !u!1 &4280869302120465856
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503776}
+  m_Layer: 0
+  m_Name: CHIMERA_ R HorseLink
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503776
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465856}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.000000002527404, y: 0.000000011044538, z: -0.38029262, w: 0.92486626}
+  m_LocalPosition: {x: -0.5611884, y: -0.000000076293944, z: 0}
+  m_LocalScale: {x: 0.9999999, y: 0.99999994, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503786}
+  m_Father: {fileID: 4280869302120503686}
+  m_LocalEulerAnglesHint: {x: 0.0000005661197, y: 0.00000067380535, z: -54.072746}
+--- !u!1 &4280869302120465858
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503778}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Thigh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503778
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465858}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.6947365, y: 0.71433663, z: -0.08389265, w: 0.005139068}
+  m_LocalPosition: {x: -0.0000005340576, y: -0.00000045776366, z: -0.28100666}
+  m_LocalScale: {x: 0.99999994, y: 1.0000001, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503686}
+  m_Father: {fileID: 4280869302120503682}
+  m_LocalEulerAnglesHint: {x: 6.8082457, y: 173.05463, z: -89.60186}
+--- !u!1 &4280869302120465860
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503780}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Toe0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465860}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.096035175, y: 0.09827016, z: -0.70039994, w: 0.7004}
+  m_LocalPosition: {x: -0.2128751, y: 0.1596447, z: 0.12068603}
+  m_LocalScale: {x: 1, y: 0.99999994, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503782}
+  m_Father: {fileID: 4280869302120503786}
+  m_LocalEulerAnglesHint: {x: 15.794185, y: 0.1864073, z: -89.97414}
+--- !u!1 &4280869302120465862
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503782}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Toe01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503782
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465862}
+  serializedVersion: 2
+  m_LocalRotation: {x: 3.711875e-11, y: 0.00000000844767, z: -3.1356695e-19, w: 1}
+  m_LocalPosition: {x: -0.13072975, y: 0, z: 0}
+  m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503780}
+  m_LocalEulerAnglesHint: {x: 0.0000000055106337, y: 0.00000075258794, z: 0.00000005336141}
+--- !u!1 &4280869302120465864
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503784}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Finger31
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503784
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465864}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.000000001575296, y: -0.000000027277492, z: 0.0105375005, w: 0.9999445}
+  m_LocalPosition: {x: -0.11403061, y: -0.000000009536743, z: 0.000000047683713}
+  m_LocalScale: {x: 0.99999994, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503798}
+  m_LocalEulerAnglesHint: {x: 0.00000015834627, y: -0.00000067445524, z: 4.3508887}
+--- !u!1 &4280869302120465866
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503786}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Foot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503786
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465866}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.10803806, y: -0.03970696, z: 0.15011987, w: 0.9819446}
+  m_LocalPosition: {x: -0.27572462, y: 0, z: -0.000000038146972}
+  m_LocalScale: {x: 0.99999994, y: 0.9999998, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503780}
+  - {fileID: 4280869302120503768}
+  - {fileID: 4280869302120503772}
+  - {fileID: 4280869302120503760}
+  m_Father: {fileID: 4280869302120503776}
+  m_LocalEulerAnglesHint: {x: 12.872568, y: -2.8464375, z: 18.538324}
+--- !u!1 &4280869302120465868
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503788}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Forearm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503788
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465868}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.000000004339112, y: -0.0000000026920568, z: 0.25934947, w: 0.96578354}
+  m_LocalPosition: {x: -0.665054, y: 0, z: 0}
+  m_LocalScale: {x: 0.99999994, y: 1, z: 0.99999994}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503790}
+  m_Father: {fileID: 4280869302120503764}
+  m_LocalEulerAnglesHint: {x: 0.0000017126144, y: -0.00000040616834, z: 62.62182}
+--- !u!1 &4280869302120465870
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503790}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503790
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465870}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.086131826, y: -0.06086958, z: 0.11860771, w: 0.9873239}
+  m_LocalPosition: {x: -0.6548823, y: 0, z: 0}
+  m_LocalScale: {x: 0.99999994, y: 1, z: 1.0000001}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503802}
+  - {fileID: 4280869302120503806}
+  - {fileID: 4280869302120503794}
+  - {fileID: 4280869302120503798}
+  m_Father: {fileID: 4280869302120503788}
+  m_LocalEulerAnglesHint: {x: 14.24468, y: -16.059994, z: 1.3528433}
+--- !u!1 &4280869302120465872
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503792}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Finger11
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503792
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465872}
+  serializedVersion: 2
+  m_LocalRotation: {x: -9.6134066e-11, y: 0.000000004506431, z: 0.021327788, w: 0.99977255}
+  m_LocalPosition: {x: -0.10975845, y: 0, z: 0}
+  m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503806}
+  m_LocalEulerAnglesHint: {x: 0.00000016184835, y: 0.0000006862776, z: 4.3508883}
+--- !u!1 &4280869302120465874
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503794}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Finger2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503794
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465874}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.04363649, y: -0.0067251455, z: 0.5003277, w: 0.86470973}
+  m_LocalPosition: {x: -0.24370925, y: -0.024538802, z: -0.011621227}
+  m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503796}
+  m_Father: {fileID: 4280869302120503790}
+  m_LocalEulerAnglesHint: {x: 4.714765, y: 1.8419896, z: 60.183846}
+--- !u!1 &4280869302120465876
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503796}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Finger21
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503796
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465876}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0000000019119257, y: 0.000000002450716, z: 0.019953344, w: 0.9998009}
+  m_LocalPosition: {x: -0.12535255, y: 0, z: 0.000000038146972}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503794}
+  m_LocalEulerAnglesHint: {x: -0.00000050466457, y: 0.0000010059935, z: 4.3508887}
+--- !u!1 &4280869302120465878
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503798}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Finger3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503798
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465878}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.10035728, y: -0.1734338, z: 0.48982495, w: 0.84848136}
+  m_LocalPosition: {x: -0.2270904, y: -0.0007167816, z: -0.11883304}
+  m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503784}
+  m_Father: {fileID: 4280869302120503790}
+  m_LocalEulerAnglesHint: {x: 19.88948, y: -12.030261, z: 57.878494}
+--- !u!1 &4280869302120465880
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503800}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Clavicle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503800
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465880}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.57613903, y: -0.18479995, z: 0.7844539, w: -0.13617964}
+  m_LocalPosition: {x: -0.55367875, y: -0.11131836, z: -0.032426212}
+  m_LocalScale: {x: 1.0000001, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503764}
+  m_Father: {fileID: 4280869302120503754}
+  m_LocalEulerAnglesHint: {x: 7.6439915, y: 74.32223, z: -154.50584}
+--- !u!1 &4280869302120465882
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503802}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Finger0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503802
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465882}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.23917347, y: 0.27418482, z: 0.20560768, w: 0.9084846}
+  m_LocalPosition: {x: -0.09531444, y: -0.002454376, z: 0.14443617}
+  m_LocalScale: {x: 1, y: 1, z: 0.99999994}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503804}
+  m_Father: {fileID: 4280869302120503790}
+  m_LocalEulerAnglesHint: {x: -33.183334, y: 28.538034, z: 16.837889}
+--- !u!1 &4280869302120465884
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503804}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Finger01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465884}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0000000034777494, y: 0.000000014010316, z: 0.24091645, w: 0.9705459}
+  m_LocalPosition: {x: -0.104482725, y: -0.000000076293944, z: -0.000000076293944}
+  m_LocalScale: {x: 0.99999994, y: 1, z: 1.0000001}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503802}
+  m_LocalEulerAnglesHint: {x: 0.0000003247519, y: -0.0000028451987, z: -20.053522}
+--- !u!1 &4280869302120465886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503806}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Finger1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503806
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465886}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.1124268, y: 0.19511685, z: 0.48719633, w: 0.84375906}
+  m_LocalPosition: {x: -0.24068832, y: -0.01916069, z: 0.075913176}
+  m_LocalScale: {x: 0.9999999, y: 0.99999994, z: 0.99999994}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503792}
+  m_Father: {fileID: 4280869302120503790}
+  m_LocalEulerAnglesHint: {x: -22.323936, y: 13.740035, z: 57.281593}
+--- !u!1 &4280869302120465888
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503680}
+  m_Layer: 0
+  m_Name: CHIMERA_ Neck2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503680
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465888}
+  serializedVersion: 2
+  m_LocalRotation: {x: -1.1031758e-13, y: 0.00000009141741, z: -0.032959834, w: 0.9994567}
+  m_LocalPosition: {x: -0.20507987, y: -0.00016296386, z: -4.5169143e-10}
+  m_LocalScale: {x: 0.9999999, y: 0.9999999, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503738}
+  m_Father: {fileID: 4280869302120503694}
+  m_LocalEulerAnglesHint: {x: 1.316466, y: 0.44078082, z: 0.06683737}
+--- !u!1 &4280869302120465890
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503682}
+  m_Layer: 0
+  m_Name: CHIMERA_ Pelvis
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503682
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465890}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.5, y: 0.5, z: 0.49999934, w: 0.50000066}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503704}
+  - {fileID: 4280869302120503778}
+  - {fileID: 4280869302120503766}
+  - {fileID: 4280869302120503756}
+  m_Father: {fileID: 4280869302120503736}
+  m_LocalEulerAnglesHint: {x: -89.72875, y: 34.144882, z: 55.78504}
+--- !u!1 &4280869302120465892
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503684}
+  m_Layer: 0
+  m_Name: CHIMERA_ Queue de cheval 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503684
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465892}
+  serializedVersion: 2
+  m_LocalRotation: {x: 8.011575e-13, y: 0.0000011352572, z: -0.40930876, w: 0.91239595}
+  m_LocalPosition: {x: -0.19814056, y: 0.18503387, z: 0.0000010572278}
+  m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503738}
+  m_LocalEulerAnglesHint: {x: 0.000020944586, y: 0.00007962304, z: -30.070862}
+--- !u!1 &4280869302120465894
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503686}
+  m_Layer: 0
+  m_Name: CHIMERA_ R Calf
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503686
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465894}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.000000002786835, y: -0.0000000044709196, z: 0.22603405, w: 0.9741194}
+  m_LocalPosition: {x: -0.6842396, y: 0, z: 0.000000038146972}
+  m_LocalScale: {x: 1, y: 1.0000001, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503776}
+  m_Father: {fileID: 4280869302120503778}
+  m_LocalEulerAnglesHint: {x: -0.0000017897981, y: 0.000000277272, z: 36.193943}
+--- !u!1 &4280869302120465896
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503688}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Toe31
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503688
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465896}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.000000013768627, y: -0.000000030145014, z: -0.12856132, w: 0.9917016}
+  m_LocalPosition: {x: -0.14518844, y: -0.000000057220458, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1.0000001}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503702}
+  m_LocalEulerAnglesHint: {x: 0.0000020810983, y: 0.0000022144986, z: -0.0000034151299}
+--- !u!1 &4280869302120465898
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503690}
+  m_Layer: 0
+  m_Name: CHIMERA_ L UpperArm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503690
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465898}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.4654488, y: -0.33169106, z: 0.37964565, w: 0.72746664}
+  m_LocalPosition: {x: -0.46186408, y: -0.00000015258789, z: 0.000000076293944}
+  m_LocalScale: {x: 1.0000001, y: 0.9999999, z: 0.9999999}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503714}
+  m_Father: {fileID: 4280869302120503742}
+  m_LocalEulerAnglesHint: {x: -18.681168, y: -69.06071, z: 54.219467}
+--- !u!1 &4280869302120465900
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503692}
+  m_Layer: 0
+  m_Name: CHIMERA_ Neck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503692
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465900}
+  serializedVersion: 2
+  m_LocalRotation: {x: 1.2632894e-15, y: 0.00000009141737, z: -0.032959823, w: 0.9994567}
+  m_LocalPosition: {x: -0.5474791, y: -0.062290344, z: -0.0000001717679}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503694}
+  m_Father: {fileID: 4280869302120503754}
+  m_LocalEulerAnglesHint: {x: 11.25762, y: 3.8939612, z: 0.9644232}
+--- !u!1 &4280869302120465902
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503694}
+  m_Layer: 0
+  m_Name: CHIMERA_ Neck1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503694
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465902}
+  serializedVersion: 2
+  m_LocalRotation: {x: -5.5823137e-14, y: 0.00000009141736, z: -0.032959823, w: 0.9994567}
+  m_LocalPosition: {x: -0.20507972, y: -0.00016296386, z: -4.5198248e-10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503680}
+  m_Father: {fileID: 4280869302120503692}
+  m_LocalEulerAnglesHint: {x: 0.6582451, y: 0.22015692, z: 0.032116145}
+--- !u!1 &4280869302120465904
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503696}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Toe11
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503696
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465904}
+  serializedVersion: 2
+  m_LocalRotation: {x: 1.5666046e-10, y: -0.0000000069883836, z: 1.0948034e-18, w: 1}
+  m_LocalPosition: {x: -0.1141003, y: 0.0000000011920929, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503710}
+  m_LocalEulerAnglesHint: {x: 0.000000004247006, y: -0.0000007377338, z: 2.9621538e-24}
+--- !u!1 &4280869302120465906
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503698}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Toe2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465906}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.16968966, y: 0.16968969, z: -0.68644404, w: 0.68644404}
+  m_LocalPosition: {x: -0.21265803, y: 0.14077468, z: 0.14183895}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503700}
+  m_Father: {fileID: 4280869302120503712}
+  m_LocalEulerAnglesHint: {x: 27.770412, y: -0.00014956122, z: -90.000175}
+--- !u!1 &4280869302120465908
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503700}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Toe21
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503700
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465908}
+  serializedVersion: 2
+  m_LocalRotation: {x: -2.3283064e-10, y: 0.0000000011750672, z: 2.7359164e-19, w: 1}
+  m_LocalPosition: {x: -0.11718605, y: -0.0000000011920929, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503698}
+  m_LocalEulerAnglesHint: {x: 8.4703295e-22, y: -0.0000005008893, z: 8.507986e-14}
+--- !u!1 &4280869302120465910
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503702}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Toe3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503702
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465910}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.47197402, y: 0.2609999, z: -0.4075144, w: 0.73692036}
+  m_LocalPosition: {x: -0.037481688, y: 0.0043900297, z: 0.12907882}
+  m_LocalScale: {x: 1, y: 0.99999994, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503688}
+  m_Father: {fileID: 4280869302120503712}
+  m_LocalEulerAnglesHint: {x: 65.27647, y: -0.00046134513, z: -57.88529}
+--- !u!1 &4280869302120465912
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503704}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Thigh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503704
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465912}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.69473153, y: 0.71430796, z: 0.084164105, w: -0.005352491}
+  m_LocalPosition: {x: 0.0000003814697, y: 0.00000045776366, z: 0.28100666}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503740}
+  m_Father: {fileID: 4280869302120503682}
+  m_LocalEulerAnglesHint: {x: -7.279636, y: -172.75423, z: -89.648315}
+--- !u!1 &4280869302120465914
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503706}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Toe0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503706
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465914}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.09603517, y: -0.09827015, z: -0.70039994, w: 0.7004}
+  m_LocalPosition: {x: -0.2128751, y: 0.15964454, z: -0.12068588}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503708}
+  m_Father: {fileID: 4280869302120503712}
+  m_LocalEulerAnglesHint: {x: -15.794209, y: -0.18644369, z: -89.974304}
+--- !u!1 &4280869302120465916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503708}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Toe01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503708
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465916}
+  serializedVersion: 2
+  m_LocalRotation: {x: -1.9838353e-10, y: 0.000000008923548, z: 1.770285e-18, w: 1}
+  m_LocalPosition: {x: -0.13072987, y: -0.0000000011920929, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4280869302120503706}
+  m_LocalEulerAnglesHint: {x: 0.0000000039017465, y: 0.0000010296527, z: -1.0658141e-13}
+--- !u!1 &4280869302120465918
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280869302120503710}
+  m_Layer: 0
+  m_Name: CHIMERA_ L Toe1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4280869302120503710
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465918}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.014907605, y: 0.015254578, z: -0.70694596, w: 0.7069459}
+  m_LocalPosition: {x: -0.21296968, y: 0.1678669, z: 0.011850281}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4280869302120503696}
+  m_Father: {fileID: 4280869302120503712}
+  m_LocalEulerAnglesHint: {x: 2.4441633, y: 0.028055444, z: -89.99956}

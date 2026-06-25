@@ -1,0 +1,43 @@
+name: 🧪 Unity Validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  compile:
+    name: Script Compilation Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-${{ hashFiles('**/*.cs', '**/*.asmdef', 'ProjectSettings/**', 'Packages/manifest.json') }}
+          restore-keys: |
+            Library-
+
+      - name: Build Unity Project (Compilation Check)
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        with:
+          unityVersion: 2022.3.62f1c1
+          targetPlatform: StandaloneWindows64
+          buildsPath: build
+          buildMethod: BuildScript.Build
+          versioning: None
+
+      - name: Upload Logs on Failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: Unity-Logs
+          path: build/*.log
