@@ -27,6 +27,10 @@ Thumbs.db
 # ── Packages（自动生成） ──
 Packages/
 
+# ── 不再追踪许可证文件 ──
+Unity_lic.ulf
+Unity_v*.alf
+
 # ── 第三方资源包（太大不上传） ──
 Assets/100BestEffectPack/
 Assets/Flooded_Grounds/
