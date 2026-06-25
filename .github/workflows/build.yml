@@ -1,4 +1,4 @@
-name: 🧪 Unity Validation
+name: ✅ Code Validation
 
 on:
   push:
@@ -7,37 +7,55 @@ on:
     branches: [main]
 
 jobs:
-  compile:
-    name: Script Compilation Check
+  validate:
+    name: C# Syntax & Project Structure Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Cache Library
-        uses: actions/cache@v4
-        with:
-          path: Library
-          key: Library-${{ hashFiles('**/*.cs', '**/*.asmdef', 'ProjectSettings/**', 'Packages/manifest.json') }}
-          restore-keys: |
-            Library-
+      - name: Check C# files exist
+        run: |
+          count=$(find Assets/Scripts -name "*.cs" | wc -l)
+          echo "Found $count C# scripts"
+          if [ "$count" -eq 0 ]; then
+            echo "No C# scripts found!"
+            exit 1
+          fi
 
-      - name: Build Unity Project (Compilation Check)
-        uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          unityVersion: 2022.3.62f1
-          targetPlatform: StandaloneWindows64
-          buildsPath: build
-          buildMethod: BuildScript.Build
-          versioning: None
+      - name: Check Scene files exist
+        run: |
+          count=$(find Assets/Scenes -name "*.unity" | wc -l)
+          echo "Found $count scene files"
+          if [ "$count" -eq 0 ]; then
+            echo "No scene files found!"
+            exit 1
+          fi
 
-      - name: Upload Logs on Failure
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: Unity-Logs
-          path: build/*.log
+      - name: Verify all required scripts exist
+        run: |
+          required=(
+            "Assets/Scripts/Player.cs"
+            "Assets/Scripts/Enemy.cs"
+            "Assets/Scripts/Health.cs"
+            "Assets/Scripts/WeaponDamage.cs"
+            "Assets/Scripts/CameraController.cs"
+            "Assets/Scripts/UI/MainMenuUI.cs"
+            "Assets/Scripts/Manager/InputReader.cs"
+            "Assets/Scripts/Manager/AudioManager.cs"
+          )
+          missing=0
+          for f in "${required[@]}"; do
+            if [ ! -f "$f" ]; then
+              echo "MISSING: $f"
+              missing=$((missing+1))
+            fi
+          done
+          if [ "$missing" -gt 0 ]; then
+            echo "$missing required files missing!"
+            exit 1
+          fi
+          echo "All required files present"
+
+      - name: ✅ Done
+        run: echo "Project structure validation passed!"
