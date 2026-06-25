@@ -1,7 +1,41 @@
 # 3DActGame
 
-> Unity 2022.3.62f1c1 | 3D 动作游戏 | 类魂风格练习项目
+> Unity 2022.3.62f1 | 3D 鍔ㄤ綔娓告垙 | 绫婚瓊椋庢牸缁冧範椤圭洰
 
-[![Unity Validation](https://github.com/xiaoxiaoguai0110/3DActGame/actions/workflows/build.yml/badge.svg)](https://github.com/xiaoxiaoguai0110/3DActGame/actions/workflows/build.yml)
+[![Build](https://github.com/xiaoxiaoguai0110/3DActGame/actions/workflows/build.yml/badge.svg)](https://github.com/xiaoxiaoguai0110/3DActGame/actions/workflows/build.yml)
 
-用 Unity 练习游戏客户端工程开发的类魂动作游戏项目。
+鐢?Unity 缁冧範娓告垙瀹㈡埛绔伐绋嬪紑鍙戠殑绫婚瓊鍔ㄤ綔娓告垙椤圭洰锛屽寘鍚鑹叉帶鍒躲€佹垬鏂楃郴缁熴€佹晫浜?AI銆乁I 绛夊畬鏁存ā鍧椼€?
+
+## 鍔熻兘
+
+- **瑙掕壊鎺у埗** 鈥?绉诲姩銆佽窇姝ャ€佽繛鍑汇€佺炕婊?
+- **鎴樻枟绯荤粺** 鈥?姝﹀櫒纰版挒浼ゅ銆佽繛鎷涚粍鍚堬紙5 娈佃繛鍑伙級
+- **鏁屼汉 AI** 鈥?澶氱鏀诲嚮妯″紡锛堢埅鍑汇€佹挄鍜€佸埡鍑昏繛鎷涳級銆佽拷鍑汇€佸彈鍑荤‖鐩?
+- **鎽勫儚鏈?* 鈥?绗笁浜虹О璺熼殢
+- **UI** 鈥?琛€鏉★紙鐜╁/鏁屼汉锛夈€佷富鑿滃崟
+- **闊虫晥** 鈥?鎴樻枟闊虫晥銆佽儗鏅煶涔愮鐞?
+
+## 鎿嶄綔
+
+| 鎸夐敭 | 鍔ㄤ綔 |
+|------|------|
+| WASD | 绉诲姩 |
+| Shift | 璺戞 |
+| 榧犳爣宸﹂敭 | 鏀诲嚮 |
+| 绌烘牸 | 缈绘粴 |
+
+## 椤圭洰缁撴瀯
+
+```
+Assets/
+鈹溾攢鈹€ Anim/              # 鍔ㄧ敾璧勬簮锛堢帺瀹?& 鏁屼汉锛?
+鈹溾攢鈹€ Prefabs/           # 棰勫埗浣?
+鈹溾攢鈹€ Scenes/            # 鍦烘櫙
+鈹?  鈹溾攢鈹€ 0-GameMenu     # 涓昏彍鍗?
+鈹?  鈹斺攢鈹€ 1-GameScene    # 娓告垙鍦烘櫙
+鈹溾攢鈹€ Scripts/           # 鑴氭湰
+鈹?  鈹溾攢鈹€ Manager/       # 绠＄悊鍣紙闊虫晥銆佽緭鍏ワ級
+鈹?  鈹溾攢鈹€ UI/            # UI 鑴氭湰
+鈹?  鈹斺攢鈹€ ...
+鈹斺攢鈹€ PlayerController.cs  # 杈撳叆鍔ㄤ綔鐢熸垚浠ｇ爜
+```
