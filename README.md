@@ -141,18 +141,6 @@ Assets/
 | IdleDuration | 3 | Enemy |
 | DisplayRange | 20 | EnemyHealthUI |
 
-## 当前已知问题
-
-1. **连招推进时机不匹配** — `PrepareComboTransition(stage+1)` 设置 Animator 条件后，Exit Time 控制的 Transition 与代码实时推进 `ComboStage` 逻辑冲突
-2. **锁定期间攻击面向** — 连招阶段每帧调用 `FaceTarget()` 确保面朝目标
-
-## 待办事项
-
-1. 连招系统重新设计（当前预备推进机制不稳定）
-2. 实现敌人死亡动画和逻辑（`EnemyState.Dead` 已定义未实现）
-3. 音频系统支持多音效同时播放
-4. 怪物受击动画配置 Animation Event `OnGetHitEnd`
-
 ## 状态流程
 
 ```
