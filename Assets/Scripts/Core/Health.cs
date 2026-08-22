@@ -8,8 +8,9 @@ public class Health : MonoBehaviour
     [SerializeField] private float m_MaxHP = 100f;
     [SerializeField] private float m_CurrentHP;
 
-    private void Start()
+    private void Awake()
     {
+        // Awake 在其他组件的 Start 之前执行，动态生成的敌人一出现就拥有有效生命值。
         m_CurrentHP = m_MaxHP;
     }
 

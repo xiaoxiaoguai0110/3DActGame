@@ -46,9 +46,10 @@ GameObject:
   - component: {fileID: 7640659917361299128}
   - component: {fileID: 5225888779874377201}
   - component: {fileID: 7686135926608086900}
+  - component: {fileID: 546044078970624018}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -173,8 +174,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bc6ba32311116c4291087dd3c4805b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CurrentState: 2
-  m_Animator: {fileID: 4280869302113056344}
+  m_CurrentState: 0
+  m_PatrolSpeed: 2
+  m_PatrolRadius: 10
+  m_IdleDuration: 3
+  m_DetectionRange: 10
+  m_AbandonRange: 20
+  m_PursuitSpeed: 5
+  m_AttackRange: 3.5
+  m_AttackDamage: 20
+  m_AttackCooldown: 3
+  playerObj: {fileID: 0}
+  bloodPrefab: {fileID: 100002, guid: 411753f631892394b85c63fab2c1a74d, type: 3}
+  bloodSpawn: {fileID: 4280869302120503766}
+--- !u!114 &546044078970624018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280869302120465434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d7979e13d1c8ca4999a75c78f497aa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MaxHP: 200
+  m_CurrentHP: 200
 --- !u!1 &4280869302120465436
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,6 @@
 # 项目上下文文档 — 3DActGame
 
-> Unity 2022.3.46f1 | 3D 动作游戏 | 类魂风格练习项目
+> Unity 2022.3.62f1 | 3D 写实动作游戏 | 类魂风格练习项目
 
 ---
 
@@ -8,22 +8,42 @@
 
 ```
 Assets/
+├── ScriptableObjects/
+│   └── AudioClipRefsSO.asset          # 音频资源配置
 └── Scripts/
-    ├── Manager/
-    │   ├── InputManager.cs      # 输入管理单例
-    │   └── AudioManager.cs      # 音频管理单例
-    ├── Player.cs                # 玩家移动/连招/锁定
-    ├── Enemy.cs                 # 敌人 AI FSM
-    ├── Health.cs                # 通用血量组件
-    ├── WeaponDamage.cs          # 武器伤害检测
-    ├── CameraController.cs      # 摄像机控制
-    ├── AudioClipRefsSO.cs       # 音频资源 SO
-    ├── UI/
-    │   ├── HealthyUI.cs         # 玩家血条
-    │   └── EnemyHealthUI.cs     # 敌人血条
-    ├── 学习日志-工程意识培养.md
-    ├── PlayerController.cs              # InputSystem 自动生成
-    └── PlayerController.inputactions    # 输入绑定配置
+    ├── Core/
+    │   ├── CountdownTimer.cs         # 通用倒计时
+    │   └── Health.cs                  # 通用血量组件
+    ├── Player/
+    │   ├── Player.cs                  # 玩家组件协调器
+    │   ├── Player.Movement.cs         # 玩家移动
+    │   ├── Player.LockOn.cs           # 锁定目标
+    │   ├── Player.Combat.cs           # 连招与攻击
+    │   └── Player.Lifecycle.cs        # 受击、死亡、入场
+    ├── Enemy/
+    │   ├── Enemy.cs                   # 敌人状态机协调器
+    │   ├── Enemy.Movement.cs           # 巡逻与追击
+    │   ├── Enemy.Combat.cs             # 攻击、受击、死亡
+    │   └── EnemySpawner.cs              # NavMesh 随机生成与数量控制
+    ├── Combat/
+    │   └── WeaponDamage.cs            # 武器伤害检测
+    ├── Camera/
+    │   └── CameraController.cs        # 摄像机控制
+    ├── Managers/
+    │   ├── AudioManager.cs            # 音频管理单例
+    │   └── MusicManager.cs             # 音乐管理入口
+    ├── Input/
+    │   ├── InputReader.cs             # 输入读取单例
+    │   ├── PlayerController.cs        # InputSystem 自动生成
+    │   └── PlayerController.inputactions
+    ├── ScriptableObjects/
+    │   └── AudioClipRefsSO.cs         # 音频资源 SO 类型
+    └── UI/
+        ├── HealthyUI.cs               # 玩家血条
+        ├── EnemyHealthUI.cs           # 最近敌人血条
+        ├── MainMenuUI.cs              # 主菜单场景跳转
+        ├── GameSceneBootstrap.cs      # 战斗场景启动流程
+        └── CombatHUDController.cs     # 战斗 HUD 协调
 ```
 
 ---
@@ -78,13 +98,18 @@ Assets/
 | Attack | 距离≤3.5m + 冷却结束 | 随机选4种攻击，Animation Event `OnAttackHit` 扇形检测 ±60° |
 | GetHit | Health.OnHealthChanged | 受击动画，1s 超时保护 → Idle |
 
+`EnemySpawner` 在 NavMesh 上随机生成敌人，默认初始 3 只、每 6 秒补充，存活数量不超过 5 只；生成前检查玩家距离、敌人间距和路径可达性。
+
 ### 2.6 血量系统 (Health)
 - **事件**：`public event Action OnHealthChanged`（TakeDamage 时触发）
 - **接口**：`GetCurrentHP()`、`GetMaxHP()`、`GetHPRatio()`
 
 ### 2.7 UI
 - **HealthyUI**：玩家 Slider，订阅 `OnHealthChanged`
-- **EnemyHealthUI**：敌人 Slider，距离 ≤20m 时显示，`Update` 每帧检测
+- **EnemyHealthUI**：每 0.2 秒查找距离 ≤20m 的最近存活敌人
+- **MainMenuUI**：只负责 `0-GameMenu` 的开始游戏与退出操作
+- **GameSceneBootstrap**：负责 `1-GameScene` 的输入恢复和玩家开场流程
+- **CombatHUDController**：集中控制战斗 HUD 文案与显示状态
 
 ### 2.8 音频 (AudioManager)
 - 单例模式，使用 `AudioClipRefsSO` ScriptableObject
