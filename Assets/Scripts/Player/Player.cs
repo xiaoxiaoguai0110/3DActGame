@@ -35,6 +35,7 @@ public partial class Player : MonoBehaviour
     private bool m_HasEnteredComboAnimation;
     private bool m_QueuedAttackAfterPrepared;
     private readonly CountdownTimer m_DeadTimer = new();
+    private bool m_IsReloadingScene;
 
     private void Awake()
     {
@@ -77,18 +78,33 @@ public partial class Player : MonoBehaviour
 
     private void Update()
     {
-        if (m_CurrentState == PlayerState.Dead || !MainMenuUI.IsInputEnabled)
+        if (m_CurrentState == PlayerState.Dead)
+        {
+            // Dead 状态仍要推进计时器；如果直接 return，OnTimerEnd 永远不会触发。
+            m_DeadTimer.Tick(Time.deltaTime);
             return;
+        }
+
+        if (!MainMenuUI.IsInputEnabled)
+        {
+            // 开场动画期间虽然不接收水平输入，CharacterController 仍负责贴地和下落。
+            UpdateGravity();
+            return;
+        }
 
         ClearDeadLockOnTarget();
 
         if (m_ComboStage > 0)
         {
             UpdateCombo();
-            return;
+        }
+        else
+        {
+            UpdateMovement();
         }
 
-        UpdateMovement();
+        // 重力与水平状态解耦：Idle、攻击和无输入时都会执行一次垂直移动。
+        UpdateGravity();
     }
 
     private void UpdateCombo()
@@ -113,21 +129,28 @@ public partial class Player : MonoBehaviour
 
     private void UpdateMovement()
     {
-        Vector2 input = InputReader.Instance.MoveInput;
+        InputReader inputReader = InputReader.Instance;
+        if (inputReader == null)
+        {
+            UpdateState(false, false);
+            return;
+        }
+
+        Vector2 input = inputReader.MoveInput;
         bool hasInput = input.magnitude > 0.01f;
-        bool isRunning = InputReader.Instance.IsRunning;
+        bool isRunning = inputReader.IsRunning;
 
         UpdateState(hasInput, isRunning);
 
         if (m_LockOnTarget != null)
         {
-            Move(GetLockedMoveDirection(input));
+            MoveHorizontal(GetLockedMoveDirection(input));
             FaceTarget();
         }
         else if (m_CurrentState != PlayerState.Idle)
         {
             Vector3 moveDirection = GetMoveDirection(input);
-            Move(moveDirection);
+            MoveHorizontal(moveDirection);
             Rotate(moveDirection);
         }
     }

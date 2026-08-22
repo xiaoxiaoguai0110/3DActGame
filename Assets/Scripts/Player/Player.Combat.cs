@@ -54,13 +54,12 @@ public partial class Player
             && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Blend Tree");
     }
 
-    public float GetCurrentAttackDamage()
+    private float GetComboDamage(int stage)
     {
         if (m_ComboDamages == null || m_ComboDamages.Length == 0)
             return 0f;
 
-        int damageStage = m_PreparedComboStage > 0 ? m_PreparedComboStage : m_ComboStage;
-        int index = Mathf.Clamp(damageStage - 1, 0, m_ComboDamages.Length - 1);
+        int index = Mathf.Clamp(stage - 1, 0, m_ComboDamages.Length - 1);
         return m_ComboDamages[index];
     }
 
@@ -145,7 +144,11 @@ public partial class Player
         AudioManager.Instance?.PlayAttackSound();
 
         if (m_WeaponDamage != null)
-            m_WeaponDamage.EnableDamage();
+        {
+            // 判定窗口开启时冻结本段伤害，后续输入只能准备下一段，不能改变本次命中值。
+            float stageDamage = GetComboDamage(m_ComboStage);
+            m_WeaponDamage.EnableDamage(stageDamage);
+        }
 
         CancelInvoke(nameof(DisableDamage));
         Invoke(nameof(DisableDamage), 0.5f);
