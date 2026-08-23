@@ -12,9 +12,7 @@ public partial class Player : MonoBehaviour
     [SerializeField] private float m_RotationSpeed = 10f;
 
     [Header("Combat")]
-    [SerializeField] private float m_ComboWindowDuration = 1.5f;
-    [SerializeField] private int m_ComboMaxStage = 5;
-    [SerializeField] private float[] m_ComboDamages = { 10f, 15f, 20f, 25f, 30f };
+    [SerializeField] private PlayerAttackConfigSO m_AttackConfig;
     [SerializeField] private WeaponDamage m_WeaponDamage;
 
     [Header("Lock On")]
@@ -29,13 +27,24 @@ public partial class Player : MonoBehaviour
 
     private int m_ComboStage;
     private int m_PreparedComboStage;
-    private readonly CountdownTimer m_ComboTimer = new();
     private float m_VerticalVelocity;
     private Transform m_LockOnTarget;
-    private bool m_HasEnteredComboAnimation;
-    private bool m_QueuedAttackAfterPrepared;
+    private bool m_HasEnteredAttackAnimation;
+    private bool m_IsComboInputWindowOpen;
+    private PlayerAttackConfigSO.AttackDefinition m_ActiveAttack;
+    private Coroutine m_HitStopCoroutine;
+    private float m_TimeScaleBeforeHitStop = 1f;
+    private bool m_OwnsHitStop;
     private readonly CountdownTimer m_DeadTimer = new();
     private bool m_IsReloadingScene;
+
+    private static readonly int SpeedHash = Animator.StringToHash("Speed");
+    private static readonly int ComboStageHash = Animator.StringToHash("ComboStage");
+    private static readonly int OnAttackHash = Animator.StringToHash("OnAttack");
+    private static readonly int OnDeadHash = Animator.StringToHash("OnDead");
+    private static readonly int OnGetHitHash = Animator.StringToHash("OnGetHit");
+    private static readonly int OnIntroHash = Animator.StringToHash("OnIntro");
+    private static readonly int AttackTagHash = Animator.StringToHash("Attack");
 
     private void Awake()
     {
@@ -60,7 +69,9 @@ public partial class Player : MonoBehaviour
         if (m_Health != null)
             m_Health.OnHealthChanged += HandlePlayerGetHit;
 
-        m_ComboTimer.OnTimerEnd += OnComboTimerEnd;
+        if (m_WeaponDamage != null)
+            m_WeaponDamage.HitConfirmed += HandleWeaponHit;
+
         m_DeadTimer.OnTimerEnd += ReloadScene;
     }
 
@@ -74,6 +85,11 @@ public partial class Player : MonoBehaviour
 
         if (m_Health != null)
             m_Health.OnHealthChanged -= HandlePlayerGetHit;
+
+        if (m_WeaponDamage != null)
+            m_WeaponDamage.HitConfirmed -= HandleWeaponHit;
+
+        RestoreTimeScaleAfterHitStop();
     }
 
     private void Update()
@@ -109,19 +125,14 @@ public partial class Player : MonoBehaviour
 
     private void UpdateCombo()
     {
-        if (m_PreparedComboStage > 0 && IsCurrentComboStage(m_PreparedComboStage))
-            CommitPreparedComboStage();
+        if (IsInAttackAnimation())
+            m_HasEnteredAttackAnimation = true;
 
-        if (IsInComboAnimation())
-            m_HasEnteredComboAnimation = true;
-
-        if (m_HasEnteredComboAnimation && IsInLocomotionAnimation())
+        if (m_HasEnteredAttackAnimation && !IsInAttackAnimation() && !m_Animator.IsInTransition(0))
         {
             ResetCombo();
             return;
         }
-
-        m_ComboTimer.Tick(Time.deltaTime);
 
         if (m_LockOnTarget != null)
             FaceTarget();

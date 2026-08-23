@@ -252,8 +252,10 @@ public static class CombatStabilityEditor
                 throw new UnityException("Player.prefab 必须关闭 Apply Root Motion。");
 
             SerializedObject serializedPlayer = new(player);
-            SerializedProperty comboDamages = serializedPlayer.FindProperty("m_ComboDamages");
-            if (comboDamages.arraySize == 0 || !Mathf.Approximately(comboDamages.GetArrayElementAtIndex(0).floatValue, 10f))
+            PlayerAttackConfigSO attackConfig = serializedPlayer.FindProperty("m_AttackConfig").objectReferenceValue as PlayerAttackConfigSO;
+            if (attackConfig == null
+                || !attackConfig.TryGetAttack(1, out PlayerAttackConfigSO.AttackDefinition firstAttack)
+                || !Mathf.Approximately(firstAttack.Damage, 10f))
                 throw new UnityException("Player.prefab 第一段连招伤害必须为 10。");
 
             WeaponDamage weaponDamage = serializedPlayer.FindProperty("m_WeaponDamage").objectReferenceValue as WeaponDamage;

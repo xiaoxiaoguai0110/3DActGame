@@ -11,8 +11,8 @@ public partial class Enemy
         float[] attackValues = { 0f, 0.33f, 0.66f, 1f };
         m_AttackType = attackValues[Random.Range(0, attackValues.Length)];
 
-        m_Animator.SetFloat("AttackIndex", m_AttackType);
-        m_Animator.SetTrigger("OnAttack");
+        m_Animator.SetFloat(AttackIndexHash, m_AttackType);
+        m_Animator.SetTrigger(OnAttackHash);
     }
 
     private void UpdateAttack()
@@ -53,7 +53,7 @@ public partial class Enemy
             m_Agent.ResetPath();
             m_Agent.velocity = Vector3.zero;
             m_Agent.isStopped = true;
-            m_Animator.SetTrigger("OnDead");
+            m_Animator.SetTrigger(OnDeadHash);
             m_DeadTimer.Start(2.7f);
             return;
         }
@@ -61,7 +61,7 @@ public partial class Enemy
         m_CurrentState = EnemyState.GetHit;
         m_Agent.ResetPath();
         m_Agent.velocity = Vector3.zero;
-        m_Animator.SetTrigger("OnGetHit");
+        m_Animator.SetTrigger(OnGetHitHash);
         m_GetHitTimer.Start(1f);
     }
 
@@ -91,12 +91,19 @@ public partial class Enemy
 
     private void OnGetHitEnd()
     {
+        if (m_CurrentState != EnemyState.GetHit)
+            return;
+
         m_CurrentState = EnemyState.Idle;
         m_StateTimer.Start(m_IdleDuration);
     }
 
     private void OnAttackHit()
     {
+        // Animation Event 可能在状态切换后才到达；只有仍处于 Attack 才允许造成伤害。
+        if (m_CurrentState != EnemyState.Attack)
+            return;
+
         if (m_Player == null)
             return;
 
@@ -116,6 +123,10 @@ public partial class Enemy
 
     private void OnAttackEnd()
     {
+        // 旧攻击动画的结束事件不能把 GetHit 或 Dead 覆盖回 Pursuit。
+        if (m_CurrentState != EnemyState.Attack)
+            return;
+
         m_AttackCooldownTimer.Start(m_AttackCooldown);
         m_CurrentState = EnemyState.Pursuit;
     }

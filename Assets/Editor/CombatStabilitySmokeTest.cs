@@ -131,6 +131,8 @@ public static class CombatStabilitySmokeTest
         startCombo?.Invoke(player, new object[] { 1 });
 
         WeaponDamage weaponDamage = player.GetComponentInChildren<WeaponDamage>(true);
+        // P1 后窗口由动画事件开启；此处直接验证 WeaponDamage 仍会冻结传入的第一段伤害。
+        weaponDamage.EnableDamage(10f);
         System.Reflection.FieldInfo activeDamage = typeof(WeaponDamage).GetField(
             "m_ActiveDamage",
             System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);

@@ -18,7 +18,7 @@ public partial class Player
             PlayerState.Run => 1f,
             _ => 0f
         };
-        m_Animator.SetFloat("Speed", normalizedSpeed);
+        m_Animator.SetFloat(SpeedHash, normalizedSpeed);
     }
 
     private Vector3 GetMoveDirection(Vector2 input)
