@@ -44,7 +44,7 @@ public partial class Player
 
     private void HandleAttack()
     {
-        if (!MainMenuUI.IsInputEnabled || m_CurrentState == PlayerState.Dead)
+        if (!MainMenuUI.IsInputEnabled || m_CurrentState == PlayerState.Dead || m_IsHitReacting)
             return;
 
         if (m_ComboStage == 0)
@@ -95,7 +95,8 @@ public partial class Player
     // 由每段攻击动画开头调用；阶段提交和音效因此与真正播放到的动画一致。
     public void BeginAttackStage(int stage)
     {
-        if (m_CurrentState == PlayerState.Dead || !IsInAttackAnimation() || !TryGetAttack(stage, out m_ActiveAttack))
+        if (m_CurrentState == PlayerState.Dead || m_IsHitReacting
+            || !IsInAttackAnimation() || !TryGetAttack(stage, out m_ActiveAttack))
             return;
 
         m_ComboStage = stage;
@@ -110,7 +111,7 @@ public partial class Player
     // Animation Event：武器 Collider 只在有效帧之间开启。
     public void EnableWeaponDamage()
     {
-        if (m_CurrentState == PlayerState.Dead || !IsInAttackAnimation())
+        if (m_CurrentState == PlayerState.Dead || m_IsHitReacting || !IsInAttackAnimation())
             return;
 
         if ((m_ActiveAttack == null || m_ActiveAttack.ComboStage != m_ComboStage)
@@ -130,6 +131,7 @@ public partial class Player
     public void OpenComboInputWindow()
     {
         if (m_CurrentState != PlayerState.Dead
+            && !m_IsHitReacting
             && IsInAttackAnimation()
             && m_ComboStage < GetMaxComboStage())
         {

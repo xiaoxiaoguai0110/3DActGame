@@ -1,4 +1,4 @@
-name: Build and Test
+name: Validate Unity Code
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: Build Unity Project (Windows)
+    name: Compile Without Third-Party Assets
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -34,9 +34,10 @@ jobs:
         with:
           targetPlatform: StandaloneWindows64
           unityVersion: 2022.3.62f1
+          buildMethod: BuildScript.Build
 
-      - name: Upload Build
+      - name: Upload Code Validation Player
         uses: actions/upload-artifact@v4
         with:
-          name: Build-Windows
+          name: Code-Validation-Windows
           path: build/StandaloneWindows64

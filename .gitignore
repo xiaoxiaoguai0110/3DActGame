@@ -6,6 +6,7 @@
 [Bb]uilds/
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
+/ProjectSettings/Packages/com.unity.testtools.codecoverage/
 
 # ── IDE ──
 *.csproj
@@ -24,8 +25,11 @@ Thumbs.db
 # ── 日志 ──
 *.log
 
-# ── Packages（自动生成） ──
-Packages/
+# ── Packages ──
+# manifest 与 lock 文件必须进入版本控制，保证其他机器解析到相同依赖版本。
+Packages/*
+!Packages/manifest.json
+!Packages/packages-lock.json
 
 # ── 不再追踪许可证文件 ──
 Unity_lic.ulf

@@ -827,6 +827,10 @@ MonoBehaviour:
   m_RotationSpeed: 10
   m_AttackConfig: {fileID: 11400000, guid: bfd66b00a3d918d448521861514a38db, type: 2}
   m_WeaponDamage: {fileID: 1889143743962134911}
+  m_HitReactionRoot: {fileID: 7262109261935286977}
+  m_HitReactionDuration: 0.22
+  m_HitReactionDistance: 0.12
+  m_HitReactionTilt: 10
   m_LockOnRange: 15
   m_LockOnAngle: 60
 --- !u!143 &4844459628190547662
