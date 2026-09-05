@@ -1,5 +1,5 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public partial class Player
 {
@@ -10,27 +10,93 @@ public partial class Player
 
         if (m_Health.GetCurrentHP() <= 0f)
         {
+            StopHitReaction();
             m_CurrentState = PlayerState.Dead;
             m_Controller.enabled = false;
             ResetCombo();
             m_LockOnTarget = null;
             m_Animator.SetTrigger(OnDeadHash);
-            m_DeadTimer.Start(3f);
+
+            // 死亡只发布结果；胜负界面、重试和返回菜单由 GameFlowController 统一负责。
+            Died?.Invoke();
             return;
         }
 
-        m_Animator.SetTrigger(OnGetHitHash);
+        StartHitReaction();
     }
 
-    private void ReloadScene()
+    private void StartHitReaction()
     {
-        if (m_IsReloadingScene)
+        ResetCombo();
+        m_Animator.CrossFade(LocomotionStateHash, 0.05f);
+
+        if (m_HitReactionCoroutine != null)
+            StopCoroutine(m_HitReactionCoroutine);
+
+        m_HitReactionCoroutine = StartCoroutine(PlayHitReaction());
+    }
+
+    private IEnumerator PlayHitReaction()
+    {
+        m_IsHitReacting = true;
+        float elapsed = 0f;
+
+        while (elapsed < m_HitReactionDuration)
+        {
+            elapsed += Time.deltaTime;
+            float normalizedTime = Mathf.Clamp01(elapsed / m_HitReactionDuration);
+            float recoil = Mathf.Sin(normalizedTime * Mathf.PI);
+
+            if (m_HitReactionRoot != null)
+            {
+                m_HitReactionRoot.localPosition = m_HitReactionBasePosition
+                    + Vector3.back * (m_HitReactionDistance * recoil);
+                m_HitReactionRoot.localRotation = m_HitReactionBaseRotation
+                    * Quaternion.Euler(-m_HitReactionTilt * recoil, 0f, 0f);
+            }
+
+            yield return null;
+        }
+
+        RestoreHitReactionPose();
+        m_IsHitReacting = false;
+        m_HitReactionCoroutine = null;
+    }
+
+    private void StopHitReaction()
+    {
+        if (m_HitReactionCoroutine != null)
+        {
+            StopCoroutine(m_HitReactionCoroutine);
+            m_HitReactionCoroutine = null;
+        }
+
+        RestoreHitReactionPose();
+        m_IsHitReacting = false;
+    }
+
+    private void RestoreHitReactionPose()
+    {
+        if (m_HitReactionRoot == null)
             return;
 
-        // 场景加载是一次性操作；防止重复回调在同一帧再次发起加载。
-        m_IsReloadingScene = true;
-        MainMenuUI.IsInputEnabled = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        m_HitReactionRoot.localPosition = m_HitReactionBasePosition;
+        m_HitReactionRoot.localRotation = m_HitReactionBaseRotation;
+    }
+
+    private Transform FindHitReactionRoot()
+    {
+        Renderer renderer = GetComponentInChildren<SkinnedMeshRenderer>(true);
+        if (renderer == null)
+            renderer = GetComponentInChildren<MeshRenderer>(true);
+        if (renderer == null)
+            return null;
+
+        Transform candidate = renderer.transform;
+        while (candidate.parent != null && candidate.parent != transform)
+            candidate = candidate.parent;
+
+        return candidate.parent == transform ? candidate : null;
     }
 
     public void PlayIntroAnimation()

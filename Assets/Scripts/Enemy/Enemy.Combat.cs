@@ -55,6 +55,7 @@ public partial class Enemy
             m_Agent.isStopped = true;
             m_Animator.SetTrigger(OnDeadHash);
             m_DeadTimer.Start(2.7f);
+            Died?.Invoke(this);
             return;
         }
 

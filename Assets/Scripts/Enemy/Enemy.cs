@@ -18,6 +18,7 @@ public enum EnemyState
 /// </summary>
 public partial class Enemy : MonoBehaviour
 {
+    public event Action<Enemy> Died;
     public event Action<Enemy> Destroyed;
 
     public EnemyState m_CurrentState = EnemyState.Idle;
@@ -87,6 +88,7 @@ public partial class Enemy : MonoBehaviour
             m_Health.OnHealthChanged -= HandleGetHit;
 
         Destroyed?.Invoke(this);
+        Died = null;
         Destroyed = null;
     }
 

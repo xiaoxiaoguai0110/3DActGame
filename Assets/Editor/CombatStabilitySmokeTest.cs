@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// P0 战斗稳定性 Play Mode 冒烟测试。
-/// 主动运行时验证重力、Root Motion、伤害快照、死亡重载和跨场景单例。
+/// 主动运行时验证重力、Root Motion、伤害快照、失败结算重试和跨场景单例。
 /// </summary>
 public static class CombatStabilitySmokeTest
 {
@@ -22,6 +22,7 @@ public static class CombatStabilitySmokeTest
     private static float s_ReloadObservedAt;
     private static InputReader s_OriginalInputReader;
     private static AudioManager s_OriginalAudioManager;
+    private static bool s_RetryRequested;
 
     [InitializeOnLoadMethod]
     private static void ResumeAfterDomainReload()
@@ -44,6 +45,7 @@ public static class CombatStabilitySmokeTest
         SessionState.SetBool(RunningKey, true);
         s_Stage = 0;
         s_Deadline = 0f;
+        s_RetryRequested = false;
         EditorApplication.update -= UpdateSmokeTest;
         EditorApplication.update += UpdateSmokeTest;
         EditorApplication.EnterPlaymode();
@@ -81,7 +83,7 @@ public static class CombatStabilitySmokeTest
                     ValidateDuplicateManagersAndKillPlayer(now);
                     break;
                 case 3:
-                    ValidateSceneReload(now);
+                    ValidateDefeatAndRetry(now);
                     break;
             }
         }
@@ -173,10 +175,32 @@ public static class CombatStabilitySmokeTest
         s_Stage = 3;
     }
 
-    private static void ValidateSceneReload(float now)
+    private static void ValidateDefeatAndRetry(float now)
     {
         if (s_SceneLoadCount > 1)
-            throw new UnityException($"玩家死亡后场景被重复加载：{s_SceneLoadCount} 次。");
+            throw new UnityException($"点击重试后场景被重复加载：{s_SceneLoadCount} 次。");
+
+        if (!s_RetryRequested)
+        {
+            if (s_SceneLoadCount > 0)
+                throw new UnityException("玩家死亡后仍然自动重载，没有等待失败结算界面。");
+
+            GameFlowController flow = UnityEngine.Object.FindObjectOfType<GameFlowController>();
+            if (flow == null || flow.CurrentState != GameFlowController.FlowState.Defeat)
+                throw new UnityException("玩家死亡后 GameFlowController 没有进入 Defeat 状态。");
+
+            if (!Mathf.Approximately(Time.timeScale, 0f))
+            {
+                if (now >= s_Deadline)
+                    throw new TimeoutException("等待失败结算界面暂停游戏超时。");
+                return;
+            }
+
+            s_RetryRequested = true;
+            s_Deadline = now + 5f;
+            flow.OnRetry();
+            return;
+        }
 
         if (s_SceneLoadCount == 1 && now >= s_ReloadObservedAt + 0.5f)
         {
@@ -187,12 +211,12 @@ public static class CombatStabilitySmokeTest
             if (UnityEngine.Object.FindObjectsOfType<AudioManager>(true).Length != 1)
                 throw new UnityException("场景重载后存在多个 AudioManager 实例。");
 
-            Finish(true, "重力、Root Motion、10 点伤害快照、单次死亡重载和跨场景单例均通过。");
+            Finish(true, "重力、Root Motion、10 点伤害快照、失败结算、单次重试和跨场景单例均通过。");
             return;
         }
 
         if (now >= s_Deadline)
-            throw new TimeoutException("等待玩家死亡后的场景重载超时。");
+            throw new TimeoutException("等待失败界面重试后的场景重载超时。");
     }
 
     private static void HandleSceneLoaded(Scene scene, LoadSceneMode mode)

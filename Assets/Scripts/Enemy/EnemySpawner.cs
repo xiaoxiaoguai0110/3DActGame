@@ -8,11 +8,15 @@ using UnityEngine.AI;
 /// </summary>
 public class EnemySpawner : MonoBehaviour
 {
+    public event Action<int, int> ProgressChanged;
+    public event Action EncounterCompleted;
+
     private const int HardEnemyLimit = 5;
     private const int SpawnPointAttempts = 40;
 
     [Header("Spawn Rules")]
     [SerializeField] private Enemy m_EnemyPrefab;
+    [SerializeField, Min(1)] private int m_TotalEnemyCount = 8;
     [SerializeField, Range(1, HardEnemyLimit)] private int m_MaxAliveEnemies = HardEnemyLimit;
     [SerializeField, Range(1, HardEnemyLimit)] private int m_InitialEnemyCount = 3;
     [SerializeField, Min(0.5f)] private float m_SpawnInterval = 6f;
@@ -28,6 +32,14 @@ public class EnemySpawner : MonoBehaviour
     private float m_TotalNavMeshArea;
     private float m_SpawnTimer;
     private bool m_InitialSpawnCompleted;
+    private int m_TotalSpawned;
+    private int m_TotalDefeated;
+    private bool m_EncounterCompleted;
+    private bool m_IsShuttingDown;
+
+    public int TotalEnemyCount => m_TotalEnemyCount;
+    public int TotalDefeated => m_TotalDefeated;
+    public int AliveEnemyCount => m_AliveEnemies.Count;
 
     private void Awake()
     {
@@ -43,18 +55,25 @@ public class EnemySpawner : MonoBehaviour
         // 场景中如果仍保留了手工放置的敌人，也纳入数量上限，避免超过五只。
         foreach (Enemy enemy in FindObjectsOfType<Enemy>())
             RegisterEnemy(enemy);
+
+        // 手工摆放数量高于配置时，以实际场景为准，避免仍有存活敌人就提前胜利。
+        m_TotalEnemyCount = Mathf.Max(m_TotalEnemyCount, m_TotalSpawned);
+        NotifyProgress();
     }
 
     private void Update()
     {
         // 主菜单期间 Time.timeScale 为 0；等待正式取得操作权后再生成敌人。
-        if (!MainMenuUI.IsInputEnabled || m_EnemyPrefab == null || m_TotalNavMeshArea <= 0f)
+        if (m_EncounterCompleted || !MainMenuUI.IsInputEnabled
+            || m_EnemyPrefab == null || m_TotalNavMeshArea <= 0f)
             return;
 
         if (!m_InitialSpawnCompleted)
         {
-            int targetCount = Mathf.Min(m_InitialEnemyCount, m_MaxAliveEnemies);
-            while (m_AliveEnemies.Count < targetCount && TrySpawnEnemy())
+            int targetCount = Mathf.Min(m_InitialEnemyCount, m_MaxAliveEnemies, m_TotalEnemyCount);
+            while (m_AliveEnemies.Count < targetCount
+                && m_TotalSpawned < m_TotalEnemyCount
+                && TrySpawnEnemy())
             {
             }
 
@@ -63,7 +82,7 @@ public class EnemySpawner : MonoBehaviour
             return;
         }
 
-        if (m_AliveEnemies.Count >= m_MaxAliveEnemies)
+        if (m_AliveEnemies.Count >= m_MaxAliveEnemies || m_TotalSpawned >= m_TotalEnemyCount)
             return;
 
         m_SpawnTimer -= Time.deltaTime;
@@ -76,28 +95,38 @@ public class EnemySpawner : MonoBehaviour
 
     private void OnDestroy()
     {
+        m_IsShuttingDown = true;
         foreach (Enemy enemy in m_AliveEnemies)
         {
             if (enemy != null)
+            {
+                enemy.Died -= HandleEnemyDied;
                 enemy.Destroyed -= HandleEnemyDestroyed;
+            }
         }
+
+        ProgressChanged = null;
+        EncounterCompleted = null;
     }
 
     private void OnValidate()
     {
         m_MaxAliveEnemies = Mathf.Clamp(m_MaxAliveEnemies, 1, HardEnemyLimit);
         m_InitialEnemyCount = Mathf.Clamp(m_InitialEnemyCount, 1, m_MaxAliveEnemies);
+        m_TotalEnemyCount = Mathf.Max(m_InitialEnemyCount, m_TotalEnemyCount);
         m_SpawnInterval = Mathf.Max(0.5f, m_SpawnInterval);
     }
 
     private bool TrySpawnEnemy()
     {
-        if (m_AliveEnemies.Count >= m_MaxAliveEnemies || !TryGetSpawnPosition(out Vector3 spawnPosition))
+        if (m_EncounterCompleted || m_TotalSpawned >= m_TotalEnemyCount
+            || m_AliveEnemies.Count >= m_MaxAliveEnemies
+            || !TryGetSpawnPosition(out Vector3 spawnPosition))
             return false;
 
         Quaternion rotation = Quaternion.Euler(0f, UnityEngine.Random.Range(0f, 360f), 0f);
         Enemy enemy = Instantiate(m_EnemyPrefab, spawnPosition, rotation, transform);
-        enemy.name = $"Enemy_{m_AliveEnemies.Count + 1:00}";
+        enemy.name = $"Enemy_{m_TotalSpawned + 1:00}";
 
         NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
         if (agent == null || !agent.Warp(spawnPosition))
@@ -116,16 +145,59 @@ public class EnemySpawner : MonoBehaviour
         if (enemy == null || !m_AliveEnemies.Add(enemy))
             return;
 
+        m_TotalSpawned++;
+        enemy.Died += HandleEnemyDied;
         enemy.Destroyed += HandleEnemyDestroyed;
+        NotifyProgress();
+    }
+
+    private void HandleEnemyDied(Enemy enemy)
+    {
+        if (enemy == null || !m_AliveEnemies.Remove(enemy))
+            return;
+
+        enemy.Died -= HandleEnemyDied;
+        m_TotalDefeated = Mathf.Min(m_TotalDefeated + 1, m_TotalEnemyCount);
+        m_SpawnTimer = m_SpawnInterval;
+        NotifyProgress();
+
+        if (m_TotalDefeated >= m_TotalEnemyCount)
+            CompleteEncounter();
     }
 
     private void HandleEnemyDestroyed(Enemy enemy)
     {
         if (enemy != null)
+        {
+            enemy.Died -= HandleEnemyDied;
             enemy.Destroyed -= HandleEnemyDestroyed;
+        }
 
-        m_AliveEnemies.Remove(enemy);
+        bool wasAlive = m_AliveEnemies.Remove(enemy);
+        if (wasAlive && !m_IsShuttingDown)
+        {
+            // 非死亡销毁也要从遭遇进度中结算，避免异常对象让胜利条件永久卡住。
+            m_TotalDefeated = Mathf.Min(m_TotalDefeated + 1, m_TotalEnemyCount);
+            NotifyProgress();
+            if (m_TotalDefeated >= m_TotalEnemyCount)
+                CompleteEncounter();
+        }
+
         m_SpawnTimer = m_SpawnInterval;
+    }
+
+    private void NotifyProgress()
+    {
+        ProgressChanged?.Invoke(m_TotalDefeated, m_TotalEnemyCount);
+    }
+
+    private void CompleteEncounter()
+    {
+        if (m_EncounterCompleted)
+            return;
+
+        m_EncounterCompleted = true;
+        EncounterCompleted?.Invoke();
     }
 
     private void CacheNavMeshTriangles()
