@@ -29,12 +29,17 @@ public class AudioManager : MonoBehaviour
             Instance = null;
     }
 
-    public void PlayAttackSound()
+    public void PlayAttackSound(AudioClip configuredClip = null)
     {
-        if (m_AudioClipRefsSO == null || m_AudioClipRefsSO.attack == null || m_AudioClipRefsSO.attack.Length == 0)
-            return;
+        AudioClip clip = configuredClip;
+        if (clip == null)
+        {
+            if (m_AudioClipRefsSO == null || m_AudioClipRefsSO.attack == null || m_AudioClipRefsSO.attack.Length == 0)
+                return;
 
-        AudioClip clip = m_AudioClipRefsSO.attack[0];
+            clip = m_AudioClipRefsSO.attack[0];
+        }
+
         if (clip == null) return;
 
         m_AttackSource.PlayOneShot(clip);

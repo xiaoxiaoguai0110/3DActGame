@@ -1,77 +1,50 @@
+using System.Collections;
 using UnityEngine;
 
 public partial class Player
 {
+    private const float HitEffectLifetime = 2f;
+
     private void ResetCombo()
     {
         m_ComboStage = 0;
         m_PreparedComboStage = 0;
-        m_HasEnteredComboAnimation = false;
-        m_QueuedAttackAfterPrepared = false;
-        m_Animator.SetInteger("ComboStage", 0);
-        m_Animator.ResetTrigger("OnAttack");
+        m_HasEnteredAttackAnimation = false;
+        m_IsComboInputWindowOpen = false;
+        m_ActiveAttack = null;
+        m_WeaponDamage?.DisableDamage();
+        m_Animator.SetInteger(ComboStageHash, 0);
+        m_Animator.ResetTrigger(OnAttackHash);
     }
 
-    private bool IsInComboAnimation()
+    private bool IsInAttackAnimation()
     {
         AnimatorStateInfo currentState = m_Animator.GetCurrentAnimatorStateInfo(0);
-        if (IsComboState(currentState))
+        if (currentState.tagHash == AttackTagHash)
             return true;
 
-        if (!m_Animator.IsInTransition(0))
-            return false;
-
-        return IsComboState(m_Animator.GetNextAnimatorStateInfo(0));
+        return m_Animator.IsInTransition(0)
+            && m_Animator.GetNextAnimatorStateInfo(0).tagHash == AttackTagHash;
     }
 
-    private bool IsComboState(AnimatorStateInfo stateInfo)
+    private int GetMaxComboStage()
     {
-        return stateInfo.IsName("combo_04_1 0")
-            || stateInfo.IsName("combo_04_2 0")
-            || stateInfo.IsName("combo_04_3 0")
-            || stateInfo.IsName("combo_04_4 0")
-            || stateInfo.IsName("combo_04_5 0");
+        return m_AttackConfig != null ? m_AttackConfig.MaxComboStage : 0;
     }
 
-    private bool IsCurrentComboStage(int stage)
+    private bool TryGetAttack(int stage, out PlayerAttackConfigSO.AttackDefinition attack)
     {
-        return GetComboStage(m_Animator.GetCurrentAnimatorStateInfo(0)) == stage;
-    }
+        if (m_AttackConfig != null && m_AttackConfig.TryGetAttack(stage, out attack))
+            return true;
 
-    private int GetComboStage(AnimatorStateInfo stateInfo)
-    {
-        if (stateInfo.IsName("combo_04_1 0")) return 1;
-        if (stateInfo.IsName("combo_04_2 0")) return 2;
-        if (stateInfo.IsName("combo_04_3 0")) return 3;
-        if (stateInfo.IsName("combo_04_4 0")) return 4;
-        if (stateInfo.IsName("combo_04_5 0")) return 5;
-        return 0;
-    }
-
-    private bool IsInLocomotionAnimation()
-    {
-        return !m_Animator.IsInTransition(0)
-            && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Blend Tree");
-    }
-
-    private float GetComboDamage(int stage)
-    {
-        if (m_ComboDamages == null || m_ComboDamages.Length == 0)
-            return 0f;
-
-        int index = Mathf.Clamp(stage - 1, 0, m_ComboDamages.Length - 1);
-        return m_ComboDamages[index];
-    }
-
-    private void DisableDamage()
-    {
-        if (m_WeaponDamage != null)
-            m_WeaponDamage.DisableDamage();
+        attack = null;
+        Debug.LogWarning($"[Player] 攻击配置缺少第 {stage} 段，已忽略本次动画事件。", this);
+        return false;
     }
 
     private void HandleAttack()
     {
-        if (!MainMenuUI.IsInputEnabled)
+        if (!MainMenuUI.IsInputEnabled || m_CurrentState == PlayerState.Dead)
             return;
 
         if (m_ComboStage == 0)
@@ -80,17 +53,11 @@ public partial class Player
             return;
         }
 
-        if (!IsInComboAnimation())
+        // 下一段输入只在动画事件显式开启的窗口内生效，连点不会提前跳段。
+        if (!m_IsComboInputWindowOpen || !IsInAttackAnimation() || m_PreparedComboStage > 0)
             return;
 
-        if (m_PreparedComboStage > 0)
-        {
-            m_QueuedAttackAfterPrepared = true;
-            m_ComboTimer.Start(m_ComboWindowDuration);
-            return;
-        }
-
-        if (m_ComboStage >= m_ComboMaxStage)
+        if (m_ComboStage >= GetMaxComboStage())
             return;
 
         PrepareComboTransition(m_ComboStage + 1);
@@ -98,66 +65,135 @@ public partial class Player
 
     private void StartCombo(int stage)
     {
+        if (!TryGetAttack(stage, out _))
+            return;
+
         m_ComboStage = stage;
         m_PreparedComboStage = 0;
-        m_QueuedAttackAfterPrepared = false;
-
+        m_HasEnteredAttackAnimation = false;
+        m_IsComboInputWindowOpen = false;
         SetComboAnimatorConditions(stage);
-        PlayComboEffects();
-        m_ComboTimer.Start(m_ComboWindowDuration);
     }
 
     private void PrepareComboTransition(int stage)
     {
-        m_PreparedComboStage = stage;
-        SetComboAnimatorConditions(stage);
-        m_ComboTimer.Start(m_ComboWindowDuration);
-    }
-
-    private void CommitPreparedComboStage()
-    {
-        m_ComboStage = m_PreparedComboStage;
-        m_PreparedComboStage = 0;
-
-        PlayComboEffects();
-        m_ComboTimer.Start(m_ComboWindowDuration);
-
-        if (m_QueuedAttackAfterPrepared && m_ComboStage < m_ComboMaxStage)
-        {
-            m_QueuedAttackAfterPrepared = false;
-            PrepareComboTransition(m_ComboStage + 1);
+        if (!TryGetAttack(stage, out _))
             return;
-        }
 
-        m_QueuedAttackAfterPrepared = false;
+        m_PreparedComboStage = stage;
+        m_IsComboInputWindowOpen = false;
+        SetComboAnimatorConditions(stage);
     }
 
     private void SetComboAnimatorConditions(int stage)
     {
-        m_Animator.SetInteger("ComboStage", stage);
-        m_Animator.ResetTrigger("OnAttack");
-        m_Animator.SetTrigger("OnAttack");
+        m_Animator.SetInteger(ComboStageHash, stage);
+        m_Animator.ResetTrigger(OnAttackHash);
+        m_Animator.SetTrigger(OnAttackHash);
     }
 
-    private void PlayComboEffects()
+    // 由每段攻击动画开头调用；阶段提交和音效因此与真正播放到的动画一致。
+    public void BeginAttackStage(int stage)
     {
-        AudioManager.Instance?.PlayAttackSound();
+        if (m_CurrentState == PlayerState.Dead || !IsInAttackAnimation() || !TryGetAttack(stage, out m_ActiveAttack))
+            return;
 
-        if (m_WeaponDamage != null)
+        m_ComboStage = stage;
+        if (m_PreparedComboStage == stage)
+            m_PreparedComboStage = 0;
+
+        m_HasEnteredAttackAnimation = true;
+        m_IsComboInputWindowOpen = false;
+        AudioManager.Instance?.PlayAttackSound(m_ActiveAttack.AudioClip);
+    }
+
+    // Animation Event：武器 Collider 只在有效帧之间开启。
+    public void EnableWeaponDamage()
+    {
+        if (m_CurrentState == PlayerState.Dead || !IsInAttackAnimation())
+            return;
+
+        if ((m_ActiveAttack == null || m_ActiveAttack.ComboStage != m_ComboStage)
+            && !TryGetAttack(m_ComboStage, out m_ActiveAttack))
+            return;
+
+        m_WeaponDamage?.EnableDamage(m_ActiveAttack.Damage);
+    }
+
+    // 关闭事件即使在状态切换边缘到达也要执行，避免武器判定残留。
+    public void DisableWeaponDamage()
+    {
+        m_WeaponDamage?.DisableDamage();
+    }
+
+    // Animation Event：这段时间内按攻击键才会缓存下一段连招。
+    public void OpenComboInputWindow()
+    {
+        if (m_CurrentState != PlayerState.Dead
+            && IsInAttackAnimation()
+            && m_ComboStage < GetMaxComboStage())
         {
-            // 判定窗口开启时冻结本段伤害，后续输入只能准备下一段，不能改变本次命中值。
-            float stageDamage = GetComboDamage(m_ComboStage);
-            m_WeaponDamage.EnableDamage(stageDamage);
+            m_IsComboInputWindowOpen = true;
+        }
+    }
+
+    public void CloseComboInputWindow()
+    {
+        m_IsComboInputWindowOpen = false;
+    }
+
+    private void HandleWeaponHit(Vector3 hitPoint)
+    {
+        if (m_ActiveAttack == null)
+            return;
+
+        if (m_ActiveAttack.HitEffectPrefab != null)
+        {
+            GameObject effect = Object.Instantiate(m_ActiveAttack.HitEffectPrefab, hitPoint, Quaternion.identity);
+            Object.Destroy(effect, HitEffectLifetime);
         }
 
-        CancelInvoke(nameof(DisableDamage));
-        Invoke(nameof(DisableDamage), 0.5f);
+        if (m_ActiveAttack.CameraShakeIntensity > 0f && CameraController.Instance != null)
+            CameraController.Instance.Shake(m_ActiveAttack.CameraShakeIntensity, 0.15f);
+
+        if (m_ActiveAttack.HitStopDuration > 0f)
+            StartHitStop(m_ActiveAttack.HitStopDuration);
     }
 
-    private void OnComboTimerEnd()
+    private void StartHitStop(float duration)
     {
-        if (m_ComboStage > 0 && m_ComboStage < m_ComboMaxStage)
-            ResetCombo();
+        if (!m_OwnsHitStop)
+        {
+            m_TimeScaleBeforeHitStop = Time.timeScale;
+            m_OwnsHitStop = true;
+            Time.timeScale = 0f;
+        }
+
+        if (m_HitStopCoroutine != null)
+            StopCoroutine(m_HitStopCoroutine);
+
+        m_HitStopCoroutine = StartCoroutine(WaitForHitStop(duration));
+    }
+
+    private IEnumerator WaitForHitStop(float duration)
+    {
+        // WaitForSecondsRealtime 不受 timeScale 影响，暂停世界后仍能按时恢复。
+        yield return new WaitForSecondsRealtime(duration);
+        m_HitStopCoroutine = null;
+        RestoreTimeScaleAfterHitStop();
+    }
+
+    private void RestoreTimeScaleAfterHitStop()
+    {
+        if (m_HitStopCoroutine != null)
+        {
+            StopCoroutine(m_HitStopCoroutine);
+            m_HitStopCoroutine = null;
+        }
+
+        if (m_OwnsHitStop && Mathf.Approximately(Time.timeScale, 0f))
+            Time.timeScale = m_TimeScaleBeforeHitStop;
+
+        m_OwnsHitStop = false;
     }
 }
-

@@ -825,14 +825,7 @@ MonoBehaviour:
   m_WalkSpeed: 5
   m_RunSpeed: 10
   m_RotationSpeed: 10
-  m_ComboWindowDuration: 1.5
-  m_ComboMaxStage: 5
-  m_ComboDamages:
-  - 10
-  - 15
-  - 20
-  - 25
-  - 30
+  m_AttackConfig: {fileID: 11400000, guid: bfd66b00a3d918d448521861514a38db, type: 2}
   m_WeaponDamage: {fileID: 1889143743962134911}
   m_LockOnRange: 15
   m_LockOnAngle: 60

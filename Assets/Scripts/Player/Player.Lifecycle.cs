@@ -13,14 +13,13 @@ public partial class Player
             m_CurrentState = PlayerState.Dead;
             m_Controller.enabled = false;
             ResetCombo();
-            DisableDamage();
             m_LockOnTarget = null;
-            m_Animator.SetTrigger("OnDead");
+            m_Animator.SetTrigger(OnDeadHash);
             m_DeadTimer.Start(3f);
             return;
         }
 
-        m_Animator.SetTrigger("OnGetHit");
+        m_Animator.SetTrigger(OnGetHitHash);
     }
 
     private void ReloadScene()
@@ -42,6 +41,6 @@ public partial class Player
             return;
         }
 
-        m_Animator.SetTrigger("OnIntro");
+        m_Animator.SetTrigger(OnIntroHash);
     }
 }

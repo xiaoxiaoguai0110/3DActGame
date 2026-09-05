@@ -1,9 +1,12 @@
-using UnityEngine;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
 public class WeaponDamage : MonoBehaviour
 {
+    public event Action<Vector3> HitConfirmed;
+
     private Collider m_Collider;
     private bool m_IsDamageActive;
     private float m_ActiveDamage;
@@ -57,6 +60,12 @@ public class WeaponDamage : MonoBehaviour
             m_HitTargets.Add(enemyHealth);
 
             enemyHealth.TakeDamage(m_ActiveDamage);
+            HitConfirmed?.Invoke(hit.ClosestPoint(m_Collider.bounds.center));
         }
+    }
+
+    private void OnDestroy()
+    {
+        HitConfirmed = null;
     }
 }

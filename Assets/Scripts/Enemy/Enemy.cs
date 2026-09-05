@@ -51,6 +51,12 @@ public partial class Enemy : MonoBehaviour
     private readonly CountdownTimer m_GetHitTimer = new();
     private readonly CountdownTimer m_DeadTimer = new();
 
+    private static readonly int MoveSpeedHash = Animator.StringToHash("MoveSpeed");
+    private static readonly int AttackIndexHash = Animator.StringToHash("AttackIndex");
+    private static readonly int OnAttackHash = Animator.StringToHash("OnAttack");
+    private static readonly int OnGetHitHash = Animator.StringToHash("OnGetHit");
+    private static readonly int OnDeadHash = Animator.StringToHash("OnDead");
+
     private void Start()
     {
         m_Animator = GetComponent<Animator>();
@@ -103,11 +109,11 @@ public partial class Enemy : MonoBehaviour
                 UpdatePursuit();
                 break;
             case EnemyState.Attack:
-                m_Animator.SetFloat("MoveSpeed", 0f);
+                m_Animator.SetFloat(MoveSpeedHash, 0f);
                 UpdateAttack();
                 break;
             case EnemyState.GetHit:
-                m_Animator.SetFloat("MoveSpeed", 0f);
+                m_Animator.SetFloat(MoveSpeedHash, 0f);
                 UpdateGetHit();
                 break;
             case EnemyState.Dead:
@@ -119,7 +125,7 @@ public partial class Enemy : MonoBehaviour
     private void SetMovementState(float speed, float normalizedSpeed)
     {
         m_Agent.speed = speed;
-        m_Animator.SetFloat("MoveSpeed", normalizedSpeed);
+        m_Animator.SetFloat(MoveSpeedHash, normalizedSpeed);
     }
 
     private void CheckDetection()
