@@ -1,22 +1,27 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(Collider))]
 public class WeaponDamage : MonoBehaviour
 {
-    private Player m_Player;
     private Collider m_Collider;
     private bool m_IsDamageActive;
-    private HashSet<Health> m_HitTargets = new HashSet<Health>();
+    private float m_ActiveDamage;
+    private readonly HashSet<Health> m_HitTargets = new();
 
     private void Awake()
     {
         m_Collider = GetComponent<Collider>();
         m_Collider.enabled = false;
-        m_Player = GetComponentInParent<Player>();
     }
 
-    public void EnableDamage()
+    public void EnableDamage(float damage)
     {
+        if (m_Collider == null)
+            return;
+
+        // 伤害在窗口开启时保存，碰撞发生得再晚也不会读到下一段连招状态。
+        m_ActiveDamage = Mathf.Max(0f, damage);
         m_Collider.enabled = true;
         m_IsDamageActive = true;
         m_HitTargets.Clear();
@@ -25,7 +30,8 @@ public class WeaponDamage : MonoBehaviour
     public void DisableDamage()
     {
         m_IsDamageActive = false;
-        m_Collider.enabled = false;
+        if (m_Collider != null)
+            m_Collider.enabled = false;
         m_HitTargets.Clear();
     }
 
@@ -50,8 +56,7 @@ public class WeaponDamage : MonoBehaviour
 
             m_HitTargets.Add(enemyHealth);
 
-            float damage = m_Player.GetCurrentAttackDamage();
-            enemyHealth.TakeDamage(damage);
+            enemyHealth.TakeDamage(m_ActiveDamage);
         }
     }
 }

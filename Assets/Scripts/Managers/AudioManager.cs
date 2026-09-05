@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
@@ -18,12 +18,22 @@ public class AudioManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        m_AttackSource = gameObject.AddComponent<AudioSource>();
+        m_AttackSource = GetComponent<AudioSource>();
+        if (m_AttackSource == null)
+            m_AttackSource = gameObject.AddComponent<AudioSource>();
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
     }
 
     public void PlayAttackSound()
     {
-        if (m_AudioClipRefsSO.attack.Length == 0) return;
+        if (m_AudioClipRefsSO == null || m_AudioClipRefsSO.attack == null || m_AudioClipRefsSO.attack.Length == 0)
+            return;
+
         AudioClip clip = m_AudioClipRefsSO.attack[0];
         if (clip == null) return;
 
